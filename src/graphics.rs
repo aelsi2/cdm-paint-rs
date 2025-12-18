@@ -1,11 +1,30 @@
 use core::ops::{Add, AddAssign, Sub, SubAssign};
 
+const PIXELS_PER_BLOCK: i16 = 16;
 const SCREEN_WIDTH: i16 = 32;
 const SCREEN_HEIGHT: i16 = 32;
 
+type Block = u16;
+
 #[derive(Clone, Copy, Default, Hash, Eq, PartialEq)]
 #[repr(transparent)]
-pub struct Point(i16);
+pub struct Point(pub(crate) i16);
+
+#[repr(u8)]
+pub enum Color {
+    Black = 0,
+    White = 1,
+}
+
+#[repr(u8)]
+pub enum Tool {
+    Pixel = 0,
+    Line = 1,
+    Rect = 2,
+    Ellipse = 3,
+    FloodFill = 4,
+    Clear = 5,
+}
 
 impl Point {
     pub const fn zero() -> Self {
@@ -20,7 +39,7 @@ impl Point {
         let Point(value) = self;
         value % SCREEN_WIDTH
     }
-    
+
     pub const fn y(self) -> i16 {
         let Point(value) = self;
         value / SCREEN_WIDTH
@@ -62,4 +81,3 @@ impl Sub<Point> for Point {
         Point(lhs_val - rhs_val)
     }
 }
-

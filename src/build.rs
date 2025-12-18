@@ -3,7 +3,7 @@ use std::fs;
 static LINKER_FILES: &[&str] = &[ 
     "./src/ivt.asm",
     "./src/cdm.asm",
-    "./src/io.asm",
+    "./src/io/io.asm",
 ];
 
 fn main() {

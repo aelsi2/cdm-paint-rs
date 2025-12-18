@@ -16,7 +16,8 @@ static CURSOR: Crit<Cell<Point>> = Crit::new(Cell::new(Point::zero()));
 
 #[unsafe(no_mangle)]
 extern "cdm-isr" fn main() {
-    Input::set_handler(on_input);
+    Input::set_handler(Some(on_input));
+    Display::set_cur2(None);
     loop {}
 }
 
@@ -25,5 +26,5 @@ fn on_input(btn: Buttons) {
     let mut point = guard.get();
     point += btn.point();
     guard.replace(point);
-    Display::set_primary_cursor(point);
+    Display::set_cur1(Some(point));
 }

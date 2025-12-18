@@ -21,14 +21,6 @@ pub enum Buttons {
     Shoulders = Self::L.bits | Self::R.bits,
 }
 
-unsafe extern "C" {
-    static input_state: crate::io::Buttons;
-    safe fn timer_disable();
-    safe fn timer_enable();
-    safe fn display_set_primary_cursor(position: Point);
-    safe fn display_set_secondary_cursor(position: Point);
-}
-
 impl Buttons {
     pub fn x(self) -> i16 {
         match self & (Buttons::Left | Buttons::Right) {
@@ -49,12 +41,28 @@ impl Buttons {
     pub fn point(self) -> Point {
         Point::new(self.x(), self.y())
     }
+}
+
+pub struct Input;
+
+impl Input {
+    pub fn set_handler(handler: Option<fn(Buttons) -> ()>) {
+        let guard = INPUT_STATE.enter();
+        let mut state = guard.borrow_mut();
+        state.handler = handler;
+    }
 
     pub fn current() -> Buttons {
         unsafe {
             return ptr::read_volatile(&input_state);
         }
     }
+}
+
+unsafe extern "C" {
+    static input_state: crate::io::Buttons;
+    safe fn timer_disable();
+    safe fn timer_enable();
 }
 
 struct InputState {
@@ -73,25 +81,15 @@ static INPUT_STATE: Crit<RefCell<InputState>> = Crit::new(RefCell::new(InputStat
 
 const TRANSITION_MAX: usize = 3;
 
-pub struct Input;
-
-impl Input {
-    pub fn set_handler(handler: fn(Buttons) -> ()) {
-        let guard = INPUT_STATE.enter();
-        let mut state = guard.borrow_mut();
-        state.handler = Some(handler);
-    }
-}
-
 #[unsafe(no_mangle)]
-unsafe extern "cdm-isr" fn on_input() {
+extern "cdm-isr" fn on_input() {
     let guard = INPUT_STATE.enter();
     let mut state = guard.borrow_mut();
     let Some(on_input) = state.handler else {
         return;
     };
 
-    let joy_new = Buttons::current();
+    let joy_new = Input::current();
 
     let joy_pressed = joy_new & !state.joy_old;
     let joy_dirs = joy_pressed & Buttons::Directions;
@@ -111,14 +109,16 @@ unsafe extern "cdm-isr" fn on_input() {
 }
 
 #[unsafe(no_mangle)]
-unsafe extern "cdm-isr" fn on_timer() {
+extern "cdm-isr" fn on_timer() {
     let guard = INPUT_STATE.enter();
     let mut state = guard.borrow_mut();
     let Some(on_input) = state.handler else {
+        state.is_repeating = false;
+        timer_disable();
         return;
     };
 
-    let joy_dirs = Buttons::current() & Buttons::Directions;
+    let joy_dirs = Input::current() & Buttons::Directions;
 
     if state.is_repeating && joy_dirs != Buttons::None {
         on_input(joy_dirs);
@@ -132,16 +132,5 @@ unsafe extern "cdm-isr" fn on_timer() {
         timer_disable();
     } else {
         state.is_repeating = true;
-    }
-}
-
-pub struct Display;
-
-impl Display {
-    pub fn set_primary_cursor(point: Point) {
-        display_set_primary_cursor(point);
-    }
-    pub fn set_secondary_cursor(point: Point) {
-        display_set_secondary_cursor(point);
     }
 }
