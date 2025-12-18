@@ -1,0 +1,12 @@
+[build]
+target = "cdm-none"
+rustflags = [ "-Csymbol-mangling-version=v0" ]
+
+[unstable]
+build-std = [ "core" ]
+
+[env]
+COCAS = ".venv/bin/cocas"
+
+[target.cdm-none]
+linker = "/home/aelsi2/Documents/projects/rust/rust-cdm/target/debug/cdm-linker"

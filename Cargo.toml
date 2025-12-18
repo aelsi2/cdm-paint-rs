@@ -1,0 +1,12 @@
+[package]
+name = "cdm-paint-rs"
+version = "0.1.0"
+edition = "2024"
+build = "src/build.rs"
+
+[profile.dev]
+opt-level = 2
+debug = false
+
+[dependencies]
+bitmask-enum = "2.2.5"
