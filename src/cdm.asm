@@ -32,6 +32,17 @@ bge memcpy_beg
 memcpy_end:
 rts
 
+memset>
+tst r2
+blt memset_end
+memset_beg:
+stb r0, r1
+inc r0
+dec r2
+bge memset_beg
+memset_end:
+rts
+
 __mulhi3>
 ldi r2, 0
 while

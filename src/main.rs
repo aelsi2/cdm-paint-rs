@@ -7,17 +7,22 @@ mod io;
 
 use cdm::Crit;
 use core::cell::Cell;
-use io::Input;
-use io::Display;
-use io::Buttons;
+use graphics::FRAMEBUF_SIZE;
+use graphics::FrameBuf;
 use graphics::Point;
+use io::Buttons;
+use io::Display;
+use io::Input;
 
 static CURSOR: Crit<Cell<Point>> = Crit::new(Cell::new(Point::zero()));
+
+static FB: FrameBuf = [0x3333; FRAMEBUF_SIZE];
 
 #[unsafe(no_mangle)]
 extern "cdm-isr" fn main() {
     Input::set_handler(Some(on_input));
     Display::set_cur2(None);
+    Display::update(&FB);
     loop {}
 }
 

@@ -1,8 +1,11 @@
 use crate::graphics::Point;
+use crate::graphics::FrameBuf;
+use crate::graphics::SCREEN_HEIGHT;
 
 unsafe extern "C" {
     safe fn display_set_primary_cursor(value: i16);
     safe fn display_set_secondary_cursor(value: i16);
+    safe fn display_write_range(fb: &FrameBuf, start: isize, end: isize);
 }
 
 const CURSOR_DISABLE: i16 = -1;
@@ -22,5 +25,13 @@ impl Display {
             Some(Point(val)) => val,
             None => CURSOR_DISABLE,
         });
+    }
+
+    pub fn update(fb: &FrameBuf) {
+        display_write_range(fb, 0, SCREEN_HEIGHT as isize - 1);
+    }
+
+    pub fn update_range(fb: &FrameBuf, line_min: isize, line_max: isize) {
+        display_write_range(fb, line_min, line_max);
     }
 }

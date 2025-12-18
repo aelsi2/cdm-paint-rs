@@ -1,10 +1,12 @@
 use core::ops::{Add, AddAssign, Sub, SubAssign};
 
-const PIXELS_PER_BLOCK: i16 = 16;
-const SCREEN_WIDTH: i16 = 32;
-const SCREEN_HEIGHT: i16 = 32;
+pub const PIXELS_PER_BLOCK: usize = 16;
+pub const SCREEN_WIDTH: usize = 32;
+pub const SCREEN_HEIGHT: usize = 32;
+pub const FRAMEBUF_SIZE: usize = SCREEN_HEIGHT * SCREEN_WIDTH / PIXELS_PER_BLOCK;
 
-type Block = u16;
+pub type Block = u16;
+pub type FrameBuf = [Block; FRAMEBUF_SIZE];
 
 #[derive(Clone, Copy, Default, Hash, Eq, PartialEq)]
 #[repr(transparent)]
@@ -32,17 +34,17 @@ impl Point {
     }
 
     pub const fn new(x: i16, y: i16) -> Self {
-        Point(x + y * SCREEN_WIDTH)
+        Point(x + y * SCREEN_WIDTH as i16)
     }
 
     pub const fn x(self) -> i16 {
         let Point(value) = self;
-        value % SCREEN_WIDTH
+        value % SCREEN_WIDTH as i16
     }
 
     pub const fn y(self) -> i16 {
         let Point(value) = self;
-        value / SCREEN_WIDTH
+        value / SCREEN_WIDTH as i16
     }
 }
 
