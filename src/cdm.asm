@@ -16,8 +16,6 @@ tst r0
 bz zero
 ldi r0, 0x8000
 zero:
-ldps r1
-or r1, r0, r1
 stps r0
 rts
 
