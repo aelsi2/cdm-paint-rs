@@ -3,23 +3,28 @@ use core::ops::{Add, AddAssign, Sub, SubAssign};
 pub const PIXELS_PER_BLOCK: usize = 16;
 pub const SCREEN_WIDTH: usize = 32;
 pub const SCREEN_HEIGHT: usize = 32;
-pub const FRAMEBUF_SIZE: usize = SCREEN_HEIGHT * SCREEN_WIDTH / PIXELS_PER_BLOCK;
+pub const BLOCKS_PER_ROW: usize = SCREEN_WIDTH / PIXELS_PER_BLOCK;
+pub const FRAMEBUF_SIZE: usize = SCREEN_HEIGHT * BLOCKS_PER_ROW;
 
 pub type Block = u16;
 pub type FrameBuf = [Block; FRAMEBUF_SIZE];
 
-#[derive(Clone, Copy, Default, Hash, Eq, PartialEq)]
+#[derive(Clone, Copy, Default, Hash, Eq, PartialEq, PartialOrd, Ord)]
 #[repr(transparent)]
-pub struct Point(pub(crate) i16);
+pub struct Point(i16);
 
+#[derive(Clone, Copy, Default, Hash, Eq, PartialEq)]
 #[repr(u8)]
 pub enum Color {
+    #[default]
     Black = 0,
     White = 1,
 }
 
+#[derive(Clone, Copy, Default, Hash, Eq, PartialEq)]
 #[repr(u8)]
 pub enum Tool {
+    #[default]
     Pixel = 0,
     Line = 1,
     Rect = 2,
@@ -45,6 +50,20 @@ impl Point {
     pub const fn y(self) -> i16 {
         let Point(value) = self;
         value / SCREEN_WIDTH as i16
+    }
+
+    pub const fn value(self) -> i16 {
+        self.0
+    }
+
+    pub const fn block_index(self) -> usize {
+        let Point(value) = self;
+        value as usize / PIXELS_PER_BLOCK
+    }
+    
+    pub const fn pixel_index(self) -> usize {
+        let Point(value) = self;
+        value as usize % PIXELS_PER_BLOCK
     }
 }
 

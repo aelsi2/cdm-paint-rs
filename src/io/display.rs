@@ -1,6 +1,5 @@
 use crate::graphics::Point;
 use crate::graphics::FrameBuf;
-use crate::graphics::SCREEN_HEIGHT;
 
 unsafe extern "C" {
     safe fn display_set_primary_cursor(value: i16);
@@ -15,20 +14,16 @@ pub struct Display;
 impl Display {
     pub fn set_cur1(point: Option<Point>) {
         display_set_primary_cursor(match point {
-            Some(Point(val)) => val,
+            Some(point) => point.value(),
             None => CURSOR_DISABLE,
         });
     }
 
     pub fn set_cur2(point: Option<Point>) {
         display_set_secondary_cursor(match point {
-            Some(Point(val)) => val,
+            Some(point) => point.value(),
             None => CURSOR_DISABLE,
         });
-    }
-
-    pub fn update(fb: &FrameBuf) {
-        display_write_range(fb, 0, SCREEN_HEIGHT as isize - 1);
     }
 
     pub fn update_range(fb: &FrameBuf, line_min: isize, line_max: isize) {
