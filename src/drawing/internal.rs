@@ -76,7 +76,7 @@ impl DrawingCtx {
         let end_bi = end.block_index();
 
         if start_bi == end_bi {
-            let block = MASK_LEFT[start.pixel_index()] | MASK_RIGHT[end.pixel_index()];
+            let block = MASK_LEFT[start.pixel_index()] & MASK_RIGHT[end.pixel_index()];
             self.draw_pattern(block, start_bi, color);
         } else {
             let start_block = MASK_LEFT[start.pixel_index()];

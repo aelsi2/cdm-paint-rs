@@ -24,6 +24,8 @@ extern "cdm-isr" fn main() {
     let mut ctx = DrawingCtx::new();
     ctx.clear(Color::White);
     ctx.draw_line(Point::new(5, 5), Point::new(11, 27), Color::Black);
+    ctx.draw_line(Point::new(5, 27), Point::new(11, 5), Color::Black);
+    ctx.draw_outline_rect(Point::new(5, 5), Point::new(11, 27), Color::Black);
     Display::update_range(&ctx.frame_buf, ctx.dirty_start, ctx.dirty_end);
     ctx.reset_dirty();
     loop {}
