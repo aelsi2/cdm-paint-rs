@@ -1,7 +1,7 @@
 # cdm-paint-rs
 
-A rewrite of [cdm_paint](https://github.com/aelsi2/cdm_paint/), a CdM-16-based raster graphics editor using the Rust programming language.
-Implements most of the featuers of the original (written in C). Uses the [experimental CdM-16 Rust compiler](https://github.com/ylab-nsu/cdm16-rust) based on the [CdM-16 LLVM backend](https://github.com/ylab-nsu/cdm16-llvm-neo/).
+A feature-complete rewrite of [cdm_paint](https://github.com/aelsi2/cdm_paint/), a raster graphics editor based on CdM-16, using the Rust programming language.
+Uses the [experimental CdM-16 Rust compiler](https://github.com/ylab-nsu/cdm16-rust) based on the [CdM-16 LLVM backend](https://github.com/ylab-nsu/cdm16-llvm-neo/).
 
 ### Hardware
 - CdM-16 processor
