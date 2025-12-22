@@ -29,7 +29,13 @@ Uses the [experimental CdM-16 Rust compiler](https://github.com/ylab-nsu/cdm16-r
 First, build the [LLVM libs](https://github.com/ylab-nsu/cdm16-llvm-neo/) and the [Rust compiler](https://github.com/ylab-nsu/cdm16-rust) and add the custom toolchain to rustup. Then build the `cdm-linker` crate, which is required by the compiler. 
 It is not properply included in the rust toolchain at the moment, so you'll need to specify the path to the executable manually in `.cargo/config.toml`. 
 
-Finally, `cd` into the project directory and execute:
+`cd` into the project directory, create a virtual python environment at `./.venv` and install `cdm-devkit` in it:
+```txt
+python3 -m venv .venv
+.venv/bin/pip install cdm-devkit
+```
+
+Finally, execute:
 ```txt
 cargo +<toolchain_name> build
 ```
