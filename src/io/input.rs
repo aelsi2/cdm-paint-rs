@@ -1,5 +1,4 @@
 use crate::cdm::Crit;
-use crate::graphics::Point;
 use bitmask_enum::bitmask;
 use core::cell::RefCell;
 use core::ptr;
@@ -22,6 +21,10 @@ pub enum Buttons {
 }
 
 impl Buttons {
+    pub fn has_any(self, flags: Buttons) -> bool {
+        (self & flags) != Buttons::None
+    }
+
     pub fn x(self) -> i16 {
         match self & (Buttons::Left | Buttons::Right) {
             Buttons::Left => -1,
@@ -38,8 +41,8 @@ impl Buttons {
         }
     }
 
-    pub fn point(self) -> Point {
-        Point::new(self.x(), self.y())
+    pub fn xy(self) -> (i16, i16) {
+        (self.x(), self.y())
     }
 }
 

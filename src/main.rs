@@ -3,38 +3,77 @@
 
 mod cdm;
 mod drawing;
+mod editor;
 mod graphics;
 mod io;
 
 use cdm::Crit;
-use core::cell::Cell;
+use core::cell::RefCell;
 use drawing::DrawingCtx;
-use graphics::Color;
-use graphics::Point;
+use editor::Editor;
+use editor::EditorMode;
+use editor::Queue;
+use graphics::Shape;
 use io::Buttons;
 use io::Display;
 use io::Input;
+use io::Menu;
 
-static CURSOR: Crit<Cell<Point>> = Crit::new(Cell::new(Point::zero()));
+static QUEUE: Crit<RefCell<Queue<Shape, 16>>> = Crit::new(RefCell::new(Queue::new()));
+static EDITOR: Crit<RefCell<Editor>> = Crit::new(RefCell::new(Editor::new()));
 
 #[unsafe(no_mangle)]
 extern "cdm-isr" fn main() {
+    EDITOR.with(|ed| update_ui(&*ed.borrow()));
     Input::set_handler(Some(on_input));
-    Display::set_cur2(None);
     let mut ctx = DrawingCtx::new();
-    ctx.clear(Color::White);
-    ctx.draw_line(Point::new(5, 5), Point::new(11, 27), Color::Black);
-    ctx.draw_line(Point::new(5, 27), Point::new(11, 5), Color::Black);
-    ctx.draw_outline_rect(Point::new(5, 5), Point::new(11, 27), Color::Black);
-    Display::update_range(&ctx.frame_buf, ctx.dirty_start, ctx.dirty_end);
-    ctx.reset_dirty();
-    loop {}
+    loop {
+        if let Some(shape) = {
+            let guard = QUEUE.enter();
+            guard.borrow_mut().dequeue()
+        } {
+            ctx.draw_shape(&shape);
+            Display::update_range(&ctx.frame_buf, ctx.dirty_start, ctx.dirty_end);
+            ctx.reset_dirty();
+        }
+    }
 }
 
 fn on_input(btn: Buttons) {
-    let guard = CURSOR.enter();
-    let mut point = guard.get();
-    point += btn.point();
-    guard.replace(point);
-    Display::set_cur1(Some(point));
+    let guard = EDITOR.enter();
+    let ed = &mut *guard.borrow_mut();
+
+    ed.move_cursor(btn.xy());
+    if btn.has_any(Buttons::Shoulders) {
+        ed.toggle_mode();
+    }
+    if btn.has_any(Buttons::A) {
+        match ed.mode {
+            EditorMode::Normal if ed.needs_cur2() => ed.set_cur2(),
+            EditorMode::Normal => {
+                let guard = QUEUE.enter();
+                ed.enqueue(&mut *guard.borrow_mut())
+            }
+            EditorMode::Menu => ed.toggle_mode(),
+        }
+    }
+    if btn.has_any(Buttons::B) {
+        match ed.mode {
+            EditorMode::Normal => ed.reset_cur2(),
+            EditorMode::Menu => ed.toggle_mode(),
+        }
+    }
+    update_ui(ed);
+}
+
+fn update_ui(editor: &Editor) {
+    if editor.mode == EditorMode::Menu {
+        Menu::set_cursor(Some(editor.cur_menu as i8));
+        Display::set_cur1(None);
+    } else {
+        Menu::set_cursor(None);
+        Display::set_cur1(Some(editor.cur1));
+    }
+    Menu::set_data(editor.tool, editor.color, editor.fill);
+    Display::set_cur2(editor.cur2);
 }

@@ -18,6 +18,11 @@ impl<'a, T> Crit<T> {
     pub fn enter(&'a self) -> CritGuard<'a, T> {
         CritGuard::new(&self.value)
     }
+
+    pub fn with(&'a self, func: impl FnOnce(&T) -> ()) {
+        let guard = CritGuard::new(&self.value);
+        func(&*guard)
+    }
 }
 
 pub struct CritGuard<'a, T> {

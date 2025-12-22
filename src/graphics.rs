@@ -33,6 +33,23 @@ pub enum Tool {
     Clear = 5,
 }
 
+#[derive(Clone, Copy, Default, Hash, Eq, PartialEq)]
+#[repr(u8)]
+pub enum Fill {
+    #[default]
+    Off = 0,
+    On = 1,
+}
+
+#[derive(Clone, Copy, Default, Hash, Eq, PartialEq)]
+pub struct Shape {
+    pub tool: Tool,
+    pub fill: Fill,
+    pub color: Color,
+    pub pt1: Point,
+    pub pt2: Point,
+}
+
 impl Point {
     pub const fn zero() -> Self {
         Point(0)
@@ -60,10 +77,16 @@ impl Point {
         let Point(value) = self;
         value as usize / PIXELS_PER_BLOCK
     }
-    
+
     pub const fn pixel_index(self) -> usize {
         let Point(value) = self;
         value as usize % PIXELS_PER_BLOCK
+    }
+}
+
+impl Into<(i16, i16)> for Point {
+    fn into(self) -> (i16, i16) {
+        (self.x(), self.y())
     }
 }
 
@@ -100,5 +123,17 @@ impl Sub<Point> for Point {
         let Point(lhs_val) = self;
         let Point(rhs_val) = rhs;
         Point(lhs_val - rhs_val)
+    }
+}
+
+impl Shape {
+    pub fn new(tool: Tool, fill: Fill, color: Color, pt1: Point, pt2: Point) -> Self {
+        Shape {
+            tool,
+            fill,
+            color,
+            pt1,
+            pt2
+        }
     }
 }

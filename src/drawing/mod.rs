@@ -4,9 +4,12 @@ mod line;
 use crate::graphics::Block;
 use crate::graphics::Color;
 use crate::graphics::FRAMEBUF_SIZE;
+use crate::graphics::Fill;
 use crate::graphics::FrameBuf;
 use crate::graphics::Point;
 use crate::graphics::SCREEN_HEIGHT;
+use crate::graphics::Shape;
+use crate::graphics::Tool;
 use core::cmp;
 
 pub struct DrawingCtx {
@@ -66,5 +69,16 @@ impl DrawingCtx {
         self.draw_horizontal_line(Point::new(min_x, min_y), Point::new(max_x, min_y), color);
         self.draw_vertical_line(Point::new(min_x, min_y), Point::new(min_x, max_y), color);
         self.draw_vertical_line(Point::new(max_x, min_y), Point::new(max_x, max_y), color);
+    }
+
+    pub fn draw_shape(&mut self, shape: &Shape) {
+        match (shape.tool, shape.fill) {
+            (Tool::Clear, _) => self.clear(shape.color),
+            (Tool::Line, _) => self.draw_line(shape.pt1, shape.pt2, shape.color),
+            (Tool::Pixel, _) => self.draw_pixel(shape.pt1, shape.color),
+            (Tool::Rect, Fill::On) => self.draw_filled_rect(shape.pt1, shape.pt2, shape.color),
+            (Tool::Rect, Fill::Off) => self.draw_outline_rect(shape.pt1, shape.pt2, shape.color),
+            _ => (),
+        }
     }
 }
