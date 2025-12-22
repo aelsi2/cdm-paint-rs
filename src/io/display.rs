@@ -14,14 +14,14 @@ pub struct Display;
 impl Display {
     pub fn set_cur1(point: Option<Point>) {
         display_set_primary_cursor(match point {
-            Some(point) => point.value(),
+            Some(point) => point.into(),
             None => CURSOR_DISABLE,
         });
     }
 
     pub fn set_cur2(point: Option<Point>) {
         display_set_secondary_cursor(match point {
-            Some(point) => point.value(),
+            Some(point) => point.into(),
             None => CURSOR_DISABLE,
         });
     }

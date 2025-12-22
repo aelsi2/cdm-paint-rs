@@ -22,7 +22,7 @@ Implements most of the featuers of the original (written in C). Uses the [experi
 - [x] Shapes (outline + filled):
   - [x] Rectangle
   - [x] Ellipse
-- [ ] Flood fill tool
+- [x] Flood fill tool
 - [x] 16 operation drawing queue
 
 ## How to compile

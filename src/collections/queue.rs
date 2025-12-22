@@ -1,12 +1,11 @@
 use core::mem::MaybeUninit;
+use crate::collections::ErrNoSpace;
 
 pub struct Queue<T, const S: usize> {
     array: [MaybeUninit<T>; S],
     start_index: usize,
     end_index: usize,
 }
-
-pub struct ErrNoSpace;
 
 unsafe impl<T, const S: usize> Sync for Queue<T, S> {}
 

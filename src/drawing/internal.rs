@@ -64,6 +64,17 @@ const MASK_PIXEL: [Block; PIXELS_PER_BLOCK] = [
 ];
 
 impl DrawingCtx {
+    pub(super) fn get_pixel(&self, point: Point) -> Color {
+        let block_index = point.block_index();
+        let pixel_index = point.pixel_index();
+        let block = MASK_PIXEL[pixel_index];
+        if self.frame_buf[block_index] & block == 0 {
+            Color::Black
+        } else {
+            Color::White
+        }
+    }
+
     pub(super) fn draw_vertical_line(&mut self, start: Point, end: Point, color: Color) {
         let block = MASK_PIXEL[start.pixel_index()];
         for block_index in (start.block_index()..=end.block_index()).step_by(BLOCKS_PER_ROW) {

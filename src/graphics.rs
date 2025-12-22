@@ -54,6 +54,10 @@ impl Point {
     pub const fn zero() -> Self {
         Point(0)
     }
+    
+    pub const fn one() -> Self {
+        Point(1)
+    }
 
     pub const fn new(x: i16, y: i16) -> Self {
         Point(x + y * SCREEN_WIDTH as i16)
@@ -69,10 +73,6 @@ impl Point {
         value / SCREEN_WIDTH as i16
     }
 
-    pub const fn value(self) -> i16 {
-        self.0
-    }
-
     pub const fn block_index(self) -> usize {
         let Point(value) = self;
         value as usize / PIXELS_PER_BLOCK
@@ -81,6 +81,19 @@ impl Point {
     pub const fn pixel_index(self) -> usize {
         let Point(value) = self;
         value as usize % PIXELS_PER_BLOCK
+    }
+}
+
+impl From<i16> for Point {
+    fn from(value: i16) -> Self {
+        Point(value)
+    }
+}
+
+impl Into<i16> for Point {
+    fn into(self) -> i16 {
+        let Point(value) = self;
+        value
     }
 }
 

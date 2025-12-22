@@ -1,9 +1,8 @@
-mod queue;
 mod rotate;
 
-pub use queue::Queue;
 use rotate::Rotate;
 
+use crate::collections::Queue;
 use crate::graphics::Color;
 use crate::graphics::Fill;
 use crate::graphics::Point;

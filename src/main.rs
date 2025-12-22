@@ -2,17 +2,18 @@
 #![no_main]
 
 mod cdm;
+mod collections;
 mod drawing;
 mod editor;
 mod graphics;
 mod io;
 
 use cdm::Crit;
+use collections::Queue;
 use core::cell::RefCell;
 use drawing::DrawingCtx;
 use editor::Editor;
 use editor::EditorMode;
-use editor::Queue;
 use graphics::Shape;
 use io::Buttons;
 use io::Display;
