@@ -6,6 +6,11 @@ unsafe extern "C" {
     safe fn restore_int(interrupt: bool);
 }
 
+pub fn wait() {
+    // wait is broken in CdM-16 at the moment. It doesn't actually grant the interrupt.
+    // See https://github.com/cdm-processors/cdm-devkit/issues/91
+}
+
 pub struct Crit<T> {
     value: T,
 }
