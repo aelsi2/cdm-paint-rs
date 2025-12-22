@@ -19,9 +19,9 @@ Implements most of the featuers of the original (written in C). Uses the [experi
   - [x] Set pixel
   - [x] Clear screen
   - [x] Draw line
-- [ ] Shapes (outline + filled):
+- [x] Shapes (outline + filled):
   - [x] Rectangle
-  - [ ] Ellipse
+  - [x] Ellipse
 - [ ] Flood fill tool
 - [x] 16 operation drawing queue
 

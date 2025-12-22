@@ -1,5 +1,6 @@
 mod internal;
 mod line;
+mod ellipse;
 
 use crate::graphics::Block;
 use crate::graphics::Color;
@@ -78,6 +79,8 @@ impl DrawingCtx {
             (Tool::Pixel, _) => self.draw_pixel(shape.pt1, shape.color),
             (Tool::Rect, Fill::On) => self.draw_filled_rect(shape.pt1, shape.pt2, shape.color),
             (Tool::Rect, Fill::Off) => self.draw_outline_rect(shape.pt1, shape.pt2, shape.color),
+            (Tool::Ellipse, Fill::On) => self.draw_filled_ellipse(shape.pt1, shape.pt2, shape.color),
+            (Tool::Ellipse, Fill::Off) => self.draw_outline_ellipse(shape.pt1, shape.pt2, shape.color),
             _ => (),
         }
     }
