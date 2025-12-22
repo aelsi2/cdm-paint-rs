@@ -35,5 +35,5 @@ cargo +<toolchain_name> build
 ```
 
 ## How to run
-Get the logisim project from the [C version](https://github.com/aelsi2/cdm_paint/), and edit the image path in the RAM component to the image built with `cargo` (located at `./target/cdm-none/debug/cdm-paint-rs.img` relative to the project's root).
+Get the logisim project from the [C version](https://github.com/aelsi2/cdm_paint/), and edit the image path in the RAM component to the image built with `cargo` (located at `./target/cdm-none/debug/cdm_paint.img` relative to the project's root).
 Run the simulation.

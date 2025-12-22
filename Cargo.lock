@@ -13,7 +13,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "cdm-paint-rs"
+name = "cdm_paint"
 version = "0.1.0"
 dependencies = [
  "bitmask-enum",
