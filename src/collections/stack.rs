@@ -6,8 +6,6 @@ pub struct Stack<T, const S: usize> {
     top: usize,
 }
 
-unsafe impl<T, const S: usize> Sync for Stack<T, S> {}
-
 impl<T, const S: usize> Drop for Stack<T, S> {
     fn drop(&mut self) {
         for index in 0..self.top {

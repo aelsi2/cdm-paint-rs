@@ -7,8 +7,6 @@ pub struct Queue<T, const S: usize> {
     end_index: usize,
 }
 
-unsafe impl<T, const S: usize> Sync for Queue<T, S> {}
-
 impl<T, const S: usize> Drop for Queue<T, S> {
     fn drop(&mut self) {
         let range = if self.start_index <= self.end_index {
