@@ -64,15 +64,15 @@ impl DrawingCtx {
 
         let center = Point::new((x1 + x2) / 2, (y1 + y2) / 2);
         let plus_off = Point::new((x1 ^ x2) & 1, (y1 ^ y2) & 1);
-        let ryry = ry.wrapping_mul(ry);
-        let rxrx = rx.wrapping_mul(rx);
+        let ryry = ry.pow(2);
+        let rxrx = rx.pow(2);
 
         let mut x = 0;
         let mut y = ry;
         let mut dx = 0;
-        let mut dy = rxrx.wrapping_mul(y) * 2;
+        let mut dy = rxrx * y * 2;
 
-        let mut d1 = ryry - rxrx.wrapping_mul(ry) + (rxrx / 4);
+        let mut d1 = ryry - rxrx * ry + rxrx / 4;
         while dx < dy {
             let point = Point::new(x, y);
             T::draw_pixel(self, center, point, plus_off, color);
@@ -90,8 +90,8 @@ impl DrawingCtx {
             }
         }
 
-        let mut d2 = ryry.wrapping_mul((x * 2 + 1).wrapping_mul(x * 2 + 1) / 4)
-            + rxrx.wrapping_mul((y - 1).wrapping_mul(y - 1) - ryry);
+        let mut d2 = ryry * ((x * 2 + 1).pow(2) / 4)
+            + rxrx * ((y - 1).pow(2) - ryry);
         while y >= 0 {
             let point = Point::new(x, y);
             T::draw_pixel(self, center, point, plus_off, color);
