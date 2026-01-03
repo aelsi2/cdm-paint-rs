@@ -1,5 +1,5 @@
 use core::mem::MaybeUninit;
-use crate::collections::ErrNoSpace;
+use super::ErrNoSpace;
 
 pub struct Stack<T, const S: usize> {
     array: [MaybeUninit<T>; S],

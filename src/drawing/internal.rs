@@ -1,4 +1,4 @@
-use crate::drawing::DrawingCtx;
+use super::DrawingCtx;
 use crate::graphics::BLOCKS_PER_ROW;
 use crate::graphics::Block;
 use crate::graphics::Color;

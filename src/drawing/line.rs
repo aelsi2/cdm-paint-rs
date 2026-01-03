@@ -1,6 +1,6 @@
+use super::DrawingCtx;
 use crate::graphics::Color;
 use crate::graphics::Point;
-use crate::drawing::DrawingCtx;
 use core::cmp;
 
 impl DrawingCtx {

@@ -1,5 +1,5 @@
+use super::DrawingCtx;
 use crate::collections::Stack;
-use crate::drawing::DrawingCtx;
 use crate::graphics::Color;
 use crate::graphics::Point;
 use crate::graphics::SCREEN_HEIGHT;
@@ -32,7 +32,7 @@ impl DrawingCtx {
             let y = point.y();
             self.mark_dirty(y as usize);
             self.draw_horizontal_line(start, end, color);
-            
+
             let mut push_adjacent = |start: Point, end: Point| {
                 let mut added = false;
                 let y = start.y();
