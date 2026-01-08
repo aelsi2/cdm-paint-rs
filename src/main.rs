@@ -36,8 +36,6 @@ extern "cdm-isr" fn main() {
             ctx.draw_shape(&shape);
             Display::update_range(&ctx.frame_buf, ctx.dirty_start, ctx.dirty_end);
             ctx.reset_dirty();
-        } else {
-            cdm::wait();
         }
     }
 }
