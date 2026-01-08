@@ -98,7 +98,7 @@ impl Editor {
         let pt1 = self.cur1;
         let pt2 = match self.cur2 {
             Some(pt) => pt,
-            None => Point::zero(),
+            None => Point::ZERO,
         };
         self.cur2 = None;
         let shape = Shape::new(self.tool, self.fill, self.color, pt1, pt2);

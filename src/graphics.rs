@@ -51,13 +51,8 @@ pub struct Shape {
 }
 
 impl Point {
-    pub const fn zero() -> Self {
-        Point(0)
-    }
-    
-    pub const fn one() -> Self {
-        Point(1)
-    }
+    pub const ZERO: Self = Point(0);
+    pub const ONE: Self = Point(1);
 
     pub const fn new(x: i16, y: i16) -> Self {
         Point(x + y * SCREEN_WIDTH as i16)

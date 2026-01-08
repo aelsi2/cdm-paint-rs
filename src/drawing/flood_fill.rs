@@ -17,17 +17,17 @@ impl DrawingCtx {
             let row_start = Point::new(0, point.y());
             let row_end = Point::new(SCREEN_WIDTH as i16, point.y());
 
-            let mut start = point - Point::one();
+            let mut start = point - Point::ONE;
             while start >= row_start && self.get_pixel(start) != color {
-                start -= Point::one();
+                start -= Point::ONE;
             }
 
             let mut end = point;
             while end < row_end && self.get_pixel(end) != color {
-                end += Point::one();
+                end += Point::ONE;
             }
-            start += Point::one();
-            end -= Point::one();
+            start += Point::ONE;
+            end -= Point::ONE;
 
             let y = point.y();
             self.mark_dirty(y as usize);
