@@ -32,6 +32,39 @@ bge memcpy_beg
 memcpy_end:
 rts
 
+memmove>
+tst r2
+ble memmove_end
+cmp r0, r1
+blt memmove_fwd
+bgt memmove_bwd
+memmove_end:
+rts
+
+memmove_fwd:
+memmove_fwd_beg:
+ldb r1, r3
+stb r0, r3
+inc r0
+inc r1
+dec r2
+bge memmove_fwd_beg
+rts
+
+memmove_bwd:
+add r0, r2, r0
+add r1, r2, r1
+dec r0
+dec r1
+memmove_bwd_beg:
+ldb r1, r3
+stb r0, r3
+dec r0
+dec r1
+dec r2
+bge memmove_bwd_beg
+rts
+
 memset>
 tst r2
 blt memset_end

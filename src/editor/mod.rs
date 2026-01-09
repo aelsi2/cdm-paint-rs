@@ -2,7 +2,7 @@ mod rotate;
 
 use rotate::Rotate;
 
-use crate::collections::Queue;
+use alloc::collections::VecDeque;
 use crate::drawing::Shape;
 use crate::drawing::shapes;
 use crate::graphics::Color;
@@ -96,7 +96,7 @@ impl Editor {
         self.cur2 = None;
     }
 
-    pub fn enqueue<const S: usize>(&mut self, queue: &mut Queue<Box<dyn Shape>, S>) {
+    pub fn enqueue(&mut self, queue: &mut VecDeque<Box<dyn Shape>>) {
         let tool = self.tool;
         let pt1 = self.cur1;
         let pt2 = match self.cur2 {
@@ -114,6 +114,6 @@ impl Editor {
             Tool::Rect => Box::new(shapes::Rect::new(pt1, pt2, color, fill)),
             Tool::Ellipse => Box::new(shapes::Ellipse::new(pt1, pt2, color, fill)),
         };
-        _ = queue.enqueue(shape);
+        queue.push_back(shape);
     }
 }

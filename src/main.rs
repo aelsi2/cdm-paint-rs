@@ -4,14 +4,13 @@
 extern crate alloc;
 
 mod cdm;
-mod collections;
 mod drawing;
 mod editor;
 mod graphics;
 mod io;
 
 use alloc::boxed::Box;
-use collections::Queue;
+use alloc::collections::VecDeque;
 use core::cell::RefCell;
 use critical_section::Mutex;
 use drawing::DrawingCtx;
@@ -23,7 +22,7 @@ use io::Display;
 use io::Input;
 use io::Menu;
 
-static QUEUE: Mutex<RefCell<Queue<Box<dyn Shape>, 16>>> = Mutex::new(RefCell::new(Queue::new()));
+static QUEUE: Mutex<RefCell<VecDeque<Box<dyn Shape>>>> = Mutex::new(RefCell::new(VecDeque::new()));
 static EDITOR: Mutex<RefCell<Editor>> = Mutex::new(RefCell::new(Editor::new()));
 
 #[unsafe(no_mangle)]
@@ -35,7 +34,7 @@ extern "cdm-isr" fn main() {
     Input::set_handler(Some(on_input));
     let mut ctx = DrawingCtx::new();
     loop {
-        if let Some(shape) = { critical_section::with(|cs| QUEUE.borrow_ref_mut(cs).dequeue()) } {
+        if let Some(shape) = { critical_section::with(|cs| QUEUE.borrow_ref_mut(cs).pop_front()) } {
             shape.draw(&mut ctx);
             Display::update_range(&ctx.frame_buf, ctx.dirty_start, ctx.dirty_end);
             ctx.reset_dirty();

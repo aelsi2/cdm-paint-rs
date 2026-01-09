@@ -1,15 +1,13 @@
 use super::DrawingCtx;
-use crate::collections::Stack;
 use crate::graphics::Color;
 use crate::graphics::Point;
 use crate::graphics::SCREEN_HEIGHT;
 use crate::graphics::SCREEN_WIDTH;
-
-const STACK_SIZE: usize = SCREEN_WIDTH * SCREEN_HEIGHT;
+use alloc::vec::Vec;
 
 impl DrawingCtx {
     pub fn flood_fill(&mut self, point: Point, color: Color) {
-        let mut stack = Stack::<Point, STACK_SIZE>::new();
+        let mut stack = Vec::<Point>::new();
 
         _ = stack.push(point);
         while !stack.is_empty() {
