@@ -5,6 +5,7 @@ extern crate alloc;
 
 mod cdm;
 mod drawing;
+mod shapes;
 mod editor;
 mod graphics;
 mod io;
@@ -16,7 +17,7 @@ use critical_section::Mutex;
 use drawing::DrawingCtx;
 use editor::Editor;
 use editor::EditorMode;
-use graphics::Shape;
+use shapes::Shape;
 use io::Buttons;
 use io::Display;
 use io::Input;

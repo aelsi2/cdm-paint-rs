@@ -2,16 +2,16 @@ mod rotate;
 
 use rotate::Rotate;
 
-use alloc::collections::VecDeque;
-use crate::drawing::Shape;
-use crate::drawing::shapes;
 use crate::graphics::Color;
 use crate::graphics::Fill;
 use crate::graphics::Point;
 use crate::graphics::SCREEN_HEIGHT;
 use crate::graphics::SCREEN_WIDTH;
 use crate::graphics::Tool;
+use crate::shapes;
+use crate::shapes::Shape;
 use alloc::boxed::Box;
+use alloc::collections::VecDeque;
 
 #[derive(Clone, Copy, Default, Hash, Eq, PartialEq)]
 #[repr(u8)]

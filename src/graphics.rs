@@ -1,5 +1,4 @@
 use core::ops::{Add, AddAssign, Sub, SubAssign};
-pub use crate::drawing::shapes::Shape;
 
 pub const PIXELS_PER_BLOCK: usize = 16;
 pub const SCREEN_WIDTH: usize = 32;

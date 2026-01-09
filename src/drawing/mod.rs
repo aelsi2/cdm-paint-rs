@@ -2,7 +2,6 @@ mod ellipse;
 mod flood_fill;
 mod internal;
 mod line;
-pub mod shapes;
 
 use crate::graphics::Block;
 use crate::graphics::Color;
@@ -11,7 +10,6 @@ use crate::graphics::FrameBuf;
 use crate::graphics::Point;
 use crate::graphics::SCREEN_HEIGHT;
 use core::cmp;
-pub use shapes::Shape;
 
 pub struct DrawingCtx {
     pub frame_buf: FrameBuf,
