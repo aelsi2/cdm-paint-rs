@@ -30,9 +30,9 @@ static EDITOR: Mutex<RefCell<Editor>> = Mutex::new(RefCell::new(Editor::new()));
 extern "cdm-isr" fn main() {
     critical_section::with(|cs| unsafe {
         cdm::initialize();
+        Input::set_handler(Some(on_input));
         update_ui(&*EDITOR.borrow_ref_mut(cs));
     });
-    Input::set_handler(Some(on_input));
     let mut ctx = DrawingCtx::new();
     loop {
         if let Some(shape) = { critical_section::with(|cs| QUEUE.borrow_ref_mut(cs).pop_front()) } {
