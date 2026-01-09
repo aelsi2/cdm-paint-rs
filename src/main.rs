@@ -55,7 +55,7 @@ fn on_input(btn: Buttons) {
             match ed.mode {
                 EditorMode::Normal if ed.needs_cur2() => ed.set_cur2(),
                 EditorMode::Normal => {
-                    critical_section::with(|cs| ed.enqueue(&mut QUEUE.borrow_ref_mut(cs)));
+                    ed.enqueue(&mut QUEUE.borrow_ref_mut(cs));
                 }
                 EditorMode::Menu => ed.toggle_mode(),
             }
