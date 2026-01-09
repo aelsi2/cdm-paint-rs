@@ -3,7 +3,7 @@ target = "cdm-none"
 rustflags = [ "-Csymbol-mangling-version=v0" ]
 
 [unstable]
-build-std = [ "core" ]
+build-std = [ "core", "alloc" ]
 
 [env]
 COCAS = ".venv/bin/cocas"

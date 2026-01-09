@@ -87,4 +87,8 @@ __mulhi3_end:
 move r2, r0
 rts
 
+__udivhi3>
+# TODO: WORKAROUND!!! THIS SHOULD BE IMPLEMENTED!!!
+rts
+
 end.

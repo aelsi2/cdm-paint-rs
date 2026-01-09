@@ -1,7 +1,7 @@
-use crate::cdm::Crit;
 use bitmask_enum::bitmask;
 use core::cell::RefCell;
 use core::ptr;
+use critical_section::Mutex;
 
 #[bitmask(u8)]
 pub enum Buttons {
@@ -50,9 +50,9 @@ pub struct Input;
 
 impl Input {
     pub fn set_handler(handler: Option<fn(Buttons) -> ()>) {
-        let guard = INPUT_STATE.enter();
-        let mut state = guard.borrow_mut();
-        state.handler = handler;
+        critical_section::with(|cs| {
+            INPUT_STATE.borrow_ref_mut(cs).handler = handler;
+        });
     }
 
     pub fn current() -> Buttons {
@@ -75,7 +75,7 @@ struct InputState {
     handler: Option<fn(Buttons) -> ()>,
 }
 
-static INPUT_STATE: Crit<RefCell<InputState>> = Crit::new(RefCell::new(InputState {
+static INPUT_STATE: Mutex<RefCell<InputState>> = Mutex::new(RefCell::new(InputState {
     transition_counter: 0,
     is_repeating: false,
     joy_old: Buttons::None,
@@ -86,54 +86,56 @@ const TRANSITION_MAX: usize = 3;
 
 #[unsafe(no_mangle)]
 extern "cdm-isr" fn on_input() {
-    let guard = INPUT_STATE.enter();
-    let mut state = guard.borrow_mut();
-    let Some(on_input) = state.handler else {
-        return;
-    };
+    critical_section::with(|cs| {
+        let mut state = INPUT_STATE.borrow_ref_mut(cs);
+        let Some(on_input) = state.handler else {
+            return;
+        };
 
-    let joy_new = Input::current();
+        let joy_new = Input::current();
 
-    let joy_pressed = joy_new & !state.joy_old;
-    let joy_dirs = joy_pressed & Buttons::Directions;
-    let joy_actions = joy_pressed & Buttons::Actions;
+        let joy_pressed = joy_new & !state.joy_old;
+        let joy_dirs = joy_pressed & Buttons::Directions;
+        let joy_actions = joy_pressed & Buttons::Actions;
 
-    if joy_dirs != Buttons::None {
-        if !state.is_repeating {
-            on_input(joy_dirs);
-            state.transition_counter = TRANSITION_MAX;
+        if joy_dirs != Buttons::None {
+            if !state.is_repeating {
+                on_input(joy_dirs);
+                state.transition_counter = TRANSITION_MAX;
+            }
+            timer_enable();
         }
-        timer_enable();
-    }
-    if joy_actions != Buttons::None {
-        on_input(joy_actions);
-    }
-    state.joy_old = joy_new;
+        if joy_actions != Buttons::None {
+            on_input(joy_actions);
+        }
+        state.joy_old = joy_new;
+    });
 }
 
 #[unsafe(no_mangle)]
 extern "cdm-isr" fn on_timer() {
-    let guard = INPUT_STATE.enter();
-    let mut state = guard.borrow_mut();
-    let Some(on_input) = state.handler else {
-        state.is_repeating = false;
-        timer_disable();
-        return;
-    };
+    critical_section::with(|cs| {
+        let mut state = INPUT_STATE.borrow_ref_mut(cs);
+        let Some(on_input) = state.handler else {
+            state.is_repeating = false;
+            timer_disable();
+            return;
+        };
 
-    let joy_dirs = Input::current() & Buttons::Directions;
+        let joy_dirs = Input::current() & Buttons::Directions;
 
-    if state.is_repeating && joy_dirs != Buttons::None {
-        on_input(joy_dirs);
-        state.transition_counter = TRANSITION_MAX;
-    }
+        if state.is_repeating && joy_dirs != Buttons::None {
+            on_input(joy_dirs);
+            state.transition_counter = TRANSITION_MAX;
+        }
 
-    if state.transition_counter > 0 {
-        state.transition_counter -= 1;
-    } else if state.is_repeating {
-        state.is_repeating = false;
-        timer_disable();
-    } else {
-        state.is_repeating = true;
-    }
+        if state.transition_counter > 0 {
+            state.transition_counter -= 1;
+        } else if state.is_repeating {
+            state.is_repeating = false;
+            timer_disable();
+        } else {
+            state.is_repeating = true;
+        }
+    });
 }

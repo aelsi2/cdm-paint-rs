@@ -1,4 +1,5 @@
 use core::ops::{Add, AddAssign, Sub, SubAssign};
+pub use crate::drawing::shapes::Shape;
 
 pub const PIXELS_PER_BLOCK: usize = 16;
 pub const SCREEN_WIDTH: usize = 32;
@@ -39,15 +40,6 @@ pub enum Fill {
     #[default]
     Off = 0,
     On = 1,
-}
-
-#[derive(Clone, Copy, Default, Hash, Eq, PartialEq)]
-pub struct Shape {
-    pub tool: Tool,
-    pub fill: Fill,
-    pub color: Color,
-    pub pt1: Point,
-    pub pt2: Point,
 }
 
 impl Point {
@@ -131,17 +123,5 @@ impl Sub<Point> for Point {
         let Point(lhs_val) = self;
         let Point(rhs_val) = rhs;
         Point(lhs_val - rhs_val)
-    }
-}
-
-impl Shape {
-    pub fn new(tool: Tool, fill: Fill, color: Color, pt1: Point, pt2: Point) -> Self {
-        Shape {
-            tool,
-            fill,
-            color,
-            pt1,
-            pt2
-        }
     }
 }

@@ -3,13 +3,15 @@ mod rotate;
 use rotate::Rotate;
 
 use crate::collections::Queue;
+use crate::drawing::Shape;
+use crate::drawing::shapes;
 use crate::graphics::Color;
 use crate::graphics::Fill;
 use crate::graphics::Point;
 use crate::graphics::SCREEN_HEIGHT;
 use crate::graphics::SCREEN_WIDTH;
-use crate::graphics::Shape;
 use crate::graphics::Tool;
+use alloc::boxed::Box;
 
 #[derive(Clone, Copy, Default, Hash, Eq, PartialEq)]
 #[repr(u8)]
@@ -94,14 +96,24 @@ impl Editor {
         self.cur2 = None;
     }
 
-    pub fn enqueue<const S: usize>(&mut self, queue: &mut Queue<Shape, S>) {
+    pub fn enqueue<const S: usize>(&mut self, queue: &mut Queue<Box<dyn Shape>, S>) {
+        let tool = self.tool;
         let pt1 = self.cur1;
         let pt2 = match self.cur2 {
             Some(pt) => pt,
             None => Point::ZERO,
         };
+        let color = self.color;
+        let fill = self.fill;
         self.cur2 = None;
-        let shape = Shape::new(self.tool, self.fill, self.color, pt1, pt2);
+        let shape: Box<dyn Shape> = match tool {
+            Tool::Clear => Box::new(shapes::Clear::new(color)),
+            Tool::Line => Box::new(shapes::Line::new(pt1, pt2, color)),
+            Tool::Pixel => Box::new(shapes::Pixel::new(pt1, color)),
+            Tool::FloodFill => Box::new(shapes::FloodFill::new(pt1, color)),
+            Tool::Rect => Box::new(shapes::Rect::new(pt1, pt2, color, fill)),
+            Tool::Ellipse => Box::new(shapes::Ellipse::new(pt1, pt2, color, fill)),
+        };
         _ = queue.enqueue(shape);
     }
 }

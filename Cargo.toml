@@ -10,3 +10,5 @@ debug = false
 
 [dependencies]
 bitmask-enum = "2.2.5"
+embedded-alloc = "0.7.0"
+critical-section = { version = "1.2.0", features = ["restore-state-bool"] }
