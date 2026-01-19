@@ -31,14 +31,6 @@ Firstly, build the [LLVM libs](https://github.com/ylab-nsu/cdm16-llvm-neo/) and 
 rustup toolchain link cdm <rust_repo>/build/host/stage1
 ```
 
-Then build the `cdm-linker` crate, which is required by the compiler.
-Specify the path to the executable in `.cargo/config.toml` in `target.cdm-none.linker`:
-```toml
-# ...
-[target.cdm-none]
-linker = "<rust_repo>/target/debug/cdm-linker"
-```
-
 `cd` into the project directory, create a virtual python environment at `./.venv` and install `cdm-devkit` in it:
 ```sh
 cd <cdm_paint_repo>
@@ -46,7 +38,7 @@ python3 -m venv .venv
 .venv/bin/pip install cdm-devkit
 ```
 
-Finally, execute:
+Execute:
 ```sh
 cargo +cdm build
 ```

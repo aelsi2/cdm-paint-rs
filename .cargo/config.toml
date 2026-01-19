@@ -7,6 +7,3 @@ build-std = [ "core", "alloc" ]
 
 [env]
 COCAS = ".venv/bin/cocas"
-
-[target.cdm-none]
-linker = "/home/aelsi2/Documents/projects/rust/rust-cdm/target/debug/cdm-linker"
