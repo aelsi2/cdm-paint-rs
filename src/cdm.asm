@@ -1,17 +1,22 @@
-rsect cdm.asm
+.section .text
 
-abort>
-halt>
+.global abort
+.set abort, halt
+
+.global halt
+halt:
 halt
 
-disable_int>
+.global disable_int
+disable_int:
 ldps r0
 di
 shr r0, 8
 shr r0, 7
 rts
 
-restore_int>
+.global restore_int
+restore_int:
 tst r0
 bz zero
 ldi r0, 0x8000
@@ -19,7 +24,8 @@ zero:
 stps r0
 rts
 
-memcpy>
+.global memcpy
+memcpy:
 tst r2
 blt memcpy_end
 memcpy_beg:
@@ -32,7 +38,8 @@ bge memcpy_beg
 memcpy_end:
 rts
 
-memmove>
+.global memmove
+memmove:
 tst r2
 ble memmove_end
 cmp r0, r1
@@ -65,7 +72,8 @@ dec r2
 bge memmove_bwd_beg
 rts
 
-memset>
+.global memset
+memset:
 tst r2
 blt memset_end
 memset_beg:
@@ -76,7 +84,8 @@ bge memset_beg
 memset_end:
 rts
 
-__mulsi3>
+.global __mulsi3
+__mulsi3:
 push r4
 push r5
 push r6
@@ -103,8 +112,8 @@ pop r5
 pop r4
 rts
 
-__mulqi3>
-__mulhi3>
+.global __mulhi3
+__mulhi3:
 ldi r2, 0
 tst r1
 bz __mulhi3_end
@@ -120,8 +129,7 @@ __mulhi3_end:
 move r2, r0
 rts
 
-__udivhi3>
+.global __udivhi3
+__udivhi3:
 # TODO: WORKAROUND!!! THIS SHOULD BE IMPLEMENTED!!!
 rts
-
-end.
