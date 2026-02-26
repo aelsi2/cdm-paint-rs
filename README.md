@@ -31,18 +31,24 @@ Firstly, build the [LLVM libs](https://github.com/ylab-nsu/cdm16-llvm-neo/) and 
 rustup toolchain link cdm <rust_repo>/build/host/stage1
 ```
 
-`cd` into the project directory, create a virtual python environment at `./.venv` and install `cdm-devkit` in it:
-```sh
-cd <cdm_paint_repo>
-python3 -m venv .venv
-.venv/bin/pip install cdm-devkit
+Rust uses the C compiler from the CDM LLVM distribution as a linker and it needs to find it. Do either of these:
+- specify the linker path in `.cargo/config.toml`:
+```toml
+[target.cdm-none]
+linker = "<replace this with the path to clang>"
 ```
+- make the compiler available under the name `clang` by temporarily adding the LLVM binary directory to `$PATH`.
 
 Execute:
 ```sh
 cargo +cdm build
 ```
 
+You will get a binary located at `./target/cdm-none/debug/cdm_paint`. Convert it to a Logisim image with this command:
+```sh
+{ echo 'v2.0 raw'; od -tx1 -An -v | tr -s '[:blank:]' '\n'; } < ./target/cdm-none/debug/cdm_paint > ./target/cdm-none/debug/cdm_paint.img
+```
+
 ## How to run
-Get the logisim project from the [C version](https://github.com/aelsi2/cdm_paint/), and edit the image path in the RAM component to the image built with `cargo` (located at `./target/cdm-none/debug/cdm_paint.img` relative to the project's root).
+Get the logisim project from the [C version](https://github.com/aelsi2/cdm_paint/). Edit the image path in the RAM component and change it to the Logisim image you got.
 Run the simulation.
