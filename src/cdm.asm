@@ -1,29 +1,5 @@
 .section .text
 
-.global abort
-.set abort, halt
-
-.global halt
-halt:
-halt
-
-.global disable_int
-disable_int:
-ldps r0
-di
-shr r0, 8
-shr r0, 7
-rts
-
-.global restore_int
-restore_int:
-tst r0
-bz zero
-ldi r0, 0x8000
-zero:
-stps r0
-rts
-
 .global memcpy
 memcpy:
 tst r2
