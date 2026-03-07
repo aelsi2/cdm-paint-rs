@@ -28,11 +28,6 @@ unsafe impl critical_section::Impl for CDMCriticalSection {
 }
 
 #[unsafe(no_mangle)]
-extern "C" fn abort() {
-    unsafe { arch::halt() }
-}
-
-#[unsafe(no_mangle)]
 extern "cdm-isr" fn on_exception() {
     unsafe { arch::halt() }
 }
