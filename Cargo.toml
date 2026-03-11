@@ -9,6 +9,11 @@ opt-level = 2
 debug = false
 lto = "fat"
 
+[profile.release]
+opt-level = 2
+debug = false
+lto = "fat"
+
 [dependencies]
 bitmask-enum = "2.2.5"
 embedded-alloc = "0.7.0"
