@@ -1,5 +1,6 @@
 #![no_std]
 #![no_main]
+#![feature(asm_experimental_arch)]
 
 extern crate alloc;
 

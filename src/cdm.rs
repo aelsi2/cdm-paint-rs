@@ -1,7 +1,11 @@
 use core::arch::cdm as arch;
+use core::arch::global_asm;
 use core::panic::PanicInfo;
 use critical_section::RawRestoreState;
 use embedded_alloc::LlffHeap as Heap;
+
+global_asm!(include_str!("./cdm.asm"));
+global_asm!(include_str!("./ivt.asm"));
 
 #[global_allocator]
 static HEAP: Heap = Heap::empty();
