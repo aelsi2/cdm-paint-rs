@@ -55,7 +55,8 @@ fn on_input(btn: Buttons) {
             match ed.mode {
                 EditorMode::Normal if ed.needs_cur2() => ed.set_cur2(),
                 EditorMode::Normal => {
-                    ed.enqueue(&mut QUEUE.borrow_ref_mut(cs));
+                    let shape = ed.pop_shape();
+                    QUEUE.borrow_ref_mut(cs).push_back(shape);
                 }
                 EditorMode::Menu => ed.toggle_mode(),
             }

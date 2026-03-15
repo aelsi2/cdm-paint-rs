@@ -8,10 +8,8 @@ use crate::graphics::Point;
 use crate::graphics::SCREEN_HEIGHT;
 use crate::graphics::SCREEN_WIDTH;
 use crate::graphics::Tool;
-use crate::shapes;
-use crate::shapes::Shape;
+use crate::shapes::*;
 use alloc::boxed::Box;
-use alloc::collections::VecDeque;
 
 #[derive(Clone, Copy, Default, Hash, Eq, PartialEq)]
 #[repr(u8)]
@@ -96,7 +94,7 @@ impl Editor {
         self.cur2 = None;
     }
 
-    pub fn enqueue(&mut self, queue: &mut VecDeque<Box<dyn Shape>>) {
+    pub fn pop_shape(&mut self) -> Box<dyn Shape> {
         let tool = self.tool;
         let pt1 = self.cur1;
         let pt2 = match self.cur2 {
@@ -106,14 +104,13 @@ impl Editor {
         let color = self.color;
         let fill = self.fill;
         self.cur2 = None;
-        let shape: Box<dyn Shape> = match tool {
-            Tool::Clear => Box::new(shapes::Clear::new(color)),
-            Tool::Line => Box::new(shapes::Line::new(pt1, pt2, color)),
-            Tool::Pixel => Box::new(shapes::Pixel::new(pt1, color)),
-            Tool::FloodFill => Box::new(shapes::FloodFill::new(pt1, color)),
-            Tool::Rect => Box::new(shapes::Rect::new(pt1, pt2, color, fill)),
-            Tool::Ellipse => Box::new(shapes::Ellipse::new(pt1, pt2, color, fill)),
-        };
-        queue.push_back(shape);
+        match tool {
+            Tool::Clear => Box::new(Clear::new(color)),
+            Tool::Line => Box::new(Line::new(pt1, pt2, color)),
+            Tool::Pixel => Box::new(Pixel::new(pt1, color)),
+            Tool::FloodFill => Box::new(FloodFill::new(pt1, color)),
+            Tool::Rect => Box::new(Rect::new(pt1, pt2, color, fill)),
+            Tool::Ellipse => Box::new(Ellipse::new(pt1, pt2, color, fill)),
+        }
     }
 }
