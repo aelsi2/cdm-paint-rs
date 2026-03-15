@@ -2,7 +2,6 @@
 name = "cdm_paint"
 version = "0.1.0"
 edition = "2024"
-build = "build.rs"
 
 [profile.dev]
 opt-level = 2

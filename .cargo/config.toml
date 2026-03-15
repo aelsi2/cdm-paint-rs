@@ -1,5 +1,6 @@
 [build]
 target = "cdm-none"
+rustflags = [ "-Clink-arg=-Tlink.ld" ]
 
 [unstable]
 build-std = [ "core", "alloc" ]
