@@ -27,8 +27,7 @@ use io::Menu;
 static QUEUE: Mutex<RefCell<VecDeque<Box<dyn Shape>>>> = Mutex::new(RefCell::new(VecDeque::new()));
 static EDITOR: Mutex<RefCell<Editor>> = Mutex::new(RefCell::new(Editor::new()));
 
-#[unsafe(no_mangle)]
-extern "cdm-isr" fn main() {
+pub extern "cdm-isr" fn main() {
     critical_section::with(|cs| unsafe {
         cdm::initialize();
         Input::set_handler(Some(on_input));

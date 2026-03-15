@@ -4,8 +4,20 @@ use core::panic::PanicInfo;
 use critical_section::RawRestoreState;
 use embedded_alloc::LlffHeap as Heap;
 
-global_asm!(include_str!("./cdm.asm"));
-global_asm!(include_str!("./ivt.asm"));
+#[repr(C)]
+struct IvtEntry(extern "cdm-isr" fn() -> (), u16);
+
+#[used]
+#[unsafe(link_section = ".ivt")]
+static IVT: [IvtEntry; 7] = [
+    IvtEntry(crate::main, 0x8000),
+    IvtEntry(on_exception, 0),
+    IvtEntry(on_exception, 0),
+    IvtEntry(on_exception, 0),
+    IvtEntry(on_exception, 0),
+    IvtEntry(crate::io::on_input, 0),
+    IvtEntry(crate::io::on_timer, 0),
+];
 
 #[global_allocator]
 static HEAP: Heap = Heap::empty();
@@ -31,7 +43,8 @@ unsafe impl critical_section::Impl for CDMCriticalSection {
     }
 }
 
-#[unsafe(no_mangle)]
+global_asm!(include_str!("./cdm.asm"));
+
 extern "cdm-isr" fn on_exception() {
     unsafe { arch::halt() }
 }

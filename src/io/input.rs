@@ -84,8 +84,7 @@ static INPUT_STATE: Mutex<RefCell<InputState>> = Mutex::new(RefCell::new(InputSt
 
 const TRANSITION_MAX: usize = 3;
 
-#[unsafe(no_mangle)]
-extern "cdm-isr" fn on_input() {
+pub extern "cdm-isr" fn on_input() {
     critical_section::with(|cs| {
         let mut state = INPUT_STATE.borrow_ref_mut(cs);
         let Some(on_input) = state.handler else {
@@ -112,8 +111,7 @@ extern "cdm-isr" fn on_input() {
     });
 }
 
-#[unsafe(no_mangle)]
-extern "cdm-isr" fn on_timer() {
+pub extern "cdm-isr" fn on_timer() {
     critical_section::with(|cs| {
         let mut state = INPUT_STATE.borrow_ref_mut(cs);
         let Some(on_input) = state.handler else {
