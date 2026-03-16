@@ -2,25 +2,25 @@ OUTPUT_FORMAT("binary")
 
 SECTIONS
 {
-  .ivt : {
+  .ivt 0x00 : {     /* Interrupt vector table */
     KEEP(*(.ivt))
   }
-  . = 0x80;
-  .mmio : {
+
+  .mmio 0x80 : {    /* Memory-mapped registers */
     KEEP(*(.mmio))
   }
 
   .text : {
-    *(.text*)      /* Program code */
-    *(.rodata*)    /* Read-only data */
+    *(.text*)       /* Program code */
+    *(.rodata*)     /* Read-only data */
   }
 
   .data : {
-    *(.data*)      /* Initialized variables */
+    *(.data*)       /* Initialized variables */
   }
 
   .bss : {
-    *(.bss*)       /* Uninitialized variables */
+    *(.bss*)        /* Uninitialized variables */
     *(COMMON)
   }
 }
