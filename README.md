@@ -26,18 +26,10 @@ Uses the [experimental CdM-16 Rust compiler](https://github.com/ylab-nsu/cdm16-r
 - [x] 16 operation drawing queue
 
 ## How to compile
-Firstly, build the [LLVM libs](https://github.com/ylab-nsu/cdm16-llvm-neo/) and the [Rust compiler](https://github.com/ylab-nsu/cdm16-rust) and add the custom toolchain to rustup like this:
+Build or get the [Rust compiler](https://github.com/ylab-nsu/cdm16-rust) and add the custom toolchain to rustup like this:
 ```sh
 rustup toolchain link cdm <rust_repo>/build/host/stage1
 ```
-
-Rust uses the C compiler from the CDM LLVM distribution as a linker and it needs to find it. Do either of these:
-- specify the linker path in `.cargo/config.toml`:
-```toml
-[target.cdm-none]
-linker = "<replace this with the path to clang>"
-```
-- make the compiler available under the name `clang` by temporarily adding the LLVM binary directory to `$PATH`.
 
 Execute:
 ```sh
