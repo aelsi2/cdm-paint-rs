@@ -4,7 +4,7 @@ use crate::graphics::Fill;
 use crate::graphics::Tool;
 
 #[repr(C)]
-pub struct MenuRegs {
+pub(super) struct MenuRegs {
     data: MenuData,
     cursor: i8,
 }
@@ -12,8 +12,6 @@ pub struct MenuRegs {
 #[derive(Clone, Copy, Default, Hash, Eq, PartialEq, PartialOrd, Ord)]
 #[repr(transparent)]
 struct MenuData(u8);
-
-pub struct Menu;
 
 impl MenuData {
     pub const fn new(tool: Tool, color: Color, fill: Fill) -> Self {
@@ -24,14 +22,12 @@ impl MenuData {
     }
 }
 
-impl Menu {
-    pub fn set_data(tool: Tool, color: Color, fill: Fill) {
-        let data = MenuData::new(tool, color, fill);
-        unsafe { core::ptr::write_volatile(&raw mut MMIO.menu.data, data) };
-    }
+pub fn set_data(tool: Tool, color: Color, fill: Fill) {
+    let data = MenuData::new(tool, color, fill);
+    unsafe { core::ptr::write_volatile(&raw mut MMIO.menu.data, data) };
+}
 
-    pub fn set_cursor(pos: Option<i8>) {
-        let value = if let Some(pos) = pos { pos } else { -1 };
-        unsafe { core::ptr::write_volatile(&raw mut MMIO.menu.cursor, value) };
-    }
+pub fn set_cursor(pos: Option<i8>) {
+    let value = if let Some(pos) = pos { pos } else { -1 };
+    unsafe { core::ptr::write_volatile(&raw mut MMIO.menu.cursor, value) };
 }

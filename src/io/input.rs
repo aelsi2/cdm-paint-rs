@@ -44,20 +44,16 @@ impl Buttons {
     pub fn xy(self) -> (i16, i16) {
         (self.x(), self.y())
     }
-}
 
-pub struct Input;
-
-impl Input {
-    pub fn set_handler(handler: Option<fn(Buttons) -> ()>) {
-        critical_section::with(|cs| {
-            INPUT_STATE.borrow_ref_mut(cs).handler = handler;
-        });
-    }
-
-    pub fn current() -> Buttons {
+    fn current() -> Self {
         unsafe { core::ptr::read_volatile(&raw mut MMIO.input) }
     }
+}
+
+pub fn set_handler(handler: Option<fn(Buttons) -> ()>) {
+    critical_section::with(|cs| {
+        INPUT_STATE.borrow_ref_mut(cs).handler = handler;
+    });
 }
 
 struct InputState {
@@ -83,7 +79,7 @@ pub extern "cdm-isr" fn on_input() {
             return;
         };
 
-        let joy_new = Input::current();
+        let joy_new = Buttons::current();
 
         let joy_pressed = joy_new & !state.joy_old;
         let joy_dirs = joy_pressed & Buttons::Directions;
@@ -112,7 +108,7 @@ pub extern "cdm-isr" fn on_timer() {
             return;
         };
 
-        let joy_dirs = Input::current() & Buttons::Directions;
+        let joy_dirs = Buttons::current() & Buttons::Directions;
 
         if state.is_repeating && joy_dirs != Buttons::None {
             on_input(joy_dirs);

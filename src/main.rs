@@ -20,9 +20,9 @@ use editor::Editor;
 use editor::EditorMode;
 use shapes::Shape;
 use io::Buttons;
-use io::Display;
-use io::Input;
-use io::Menu;
+use io::display;
+use io::input;
+use io::menu;
 
 static QUEUE: Mutex<RefCell<VecDeque<Box<dyn Shape>>>> = Mutex::new(RefCell::new(VecDeque::new()));
 static EDITOR: Mutex<RefCell<Editor>> = Mutex::new(RefCell::new(Editor::new()));
@@ -30,14 +30,14 @@ static EDITOR: Mutex<RefCell<Editor>> = Mutex::new(RefCell::new(Editor::new()));
 pub extern "cdm-isr" fn main() {
     critical_section::with(|cs| unsafe {
         cdm::initialize();
-        Input::set_handler(Some(on_input));
+        input::set_handler(Some(on_input));
         update_ui(&*EDITOR.borrow_ref_mut(cs));
     });
     let mut ctx = DrawingCtx::new();
     loop {
         if let Some(shape) = { critical_section::with(|cs| QUEUE.borrow_ref_mut(cs).pop_front()) } {
             shape.draw(&mut ctx);
-            Display::update_range(&ctx.frame_buf, ctx.dirty_start, ctx.dirty_end);
+            display::update_range(&ctx.frame_buf, ctx.dirty_start, ctx.dirty_end);
             ctx.reset_dirty();
         }
     }
@@ -73,12 +73,12 @@ fn on_input(btn: Buttons) {
 
 fn update_ui(editor: &Editor) {
     if editor.mode == EditorMode::Menu {
-        Menu::set_cursor(Some(editor.cur_menu as i8));
-        Display::set_cur1(None);
+        menu::set_cursor(Some(editor.cur_menu as i8));
+        display::set_cur1(None);
     } else {
-        Menu::set_cursor(None);
-        Display::set_cur1(Some(editor.cur1));
+        menu::set_cursor(None);
+        display::set_cur1(Some(editor.cur1));
     }
-    Menu::set_data(editor.tool, editor.color, editor.fill);
-    Display::set_cur2(editor.cur2);
+    menu::set_data(editor.tool, editor.color, editor.fill);
+    display::set_cur2(editor.cur2);
 }

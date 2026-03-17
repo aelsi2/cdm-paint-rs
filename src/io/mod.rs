@@ -1,13 +1,10 @@
-mod display;
-mod input;
-mod menu;
+pub mod display;
+pub mod input;
+pub mod menu;
 
-pub use display::Display;
 pub use input::Buttons;
-pub use input::Input;
 pub use input::on_input;
 pub use input::on_timer;
-pub use menu::Menu;
 
 use display::CursorRegs;
 use display::DisplayRegs;
