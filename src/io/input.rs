@@ -1,6 +1,6 @@
+use super::MMIO;
 use bitmask_enum::bitmask;
 use core::cell::RefCell;
-use core::ptr;
 use critical_section::Mutex;
 
 #[bitmask(u8)]
@@ -56,16 +56,8 @@ impl Input {
     }
 
     pub fn current() -> Buttons {
-        unsafe {
-            return ptr::read_volatile(&input_state);
-        }
+        unsafe { core::ptr::read_volatile(&raw mut MMIO.input) }
     }
-}
-
-unsafe extern "C" {
-    static input_state: crate::io::Buttons;
-    safe fn timer_disable();
-    safe fn timer_enable();
 }
 
 struct InputState {
@@ -102,7 +94,7 @@ pub extern "cdm-isr" fn on_input() {
                 on_input(joy_dirs);
                 state.transition_counter = TRANSITION_MAX;
             }
-            timer_enable();
+            unsafe { core::ptr::write_volatile(&raw mut MMIO.timer, true) };
         }
         if joy_actions != Buttons::None {
             on_input(joy_actions);
@@ -116,7 +108,7 @@ pub extern "cdm-isr" fn on_timer() {
         let mut state = INPUT_STATE.borrow_ref_mut(cs);
         let Some(on_input) = state.handler else {
             state.is_repeating = false;
-            timer_disable();
+            unsafe { core::ptr::write_volatile(&raw mut MMIO.timer, false) };
             return;
         };
 
@@ -131,7 +123,7 @@ pub extern "cdm-isr" fn on_timer() {
             state.transition_counter -= 1;
         } else if state.is_repeating {
             state.is_repeating = false;
-            timer_disable();
+            unsafe { core::ptr::write_volatile(&raw mut MMIO.timer, false) };
         } else {
             state.is_repeating = true;
         }

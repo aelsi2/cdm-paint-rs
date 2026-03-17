@@ -1,6 +1,13 @@
-use crate::graphics::Tool;
+use super::MMIO;
 use crate::graphics::Color;
 use crate::graphics::Fill;
+use crate::graphics::Tool;
+
+#[repr(C)]
+pub struct MenuRegs {
+    data: MenuData,
+    cursor: i8,
+}
 
 #[derive(Clone, Copy, Default, Hash, Eq, PartialEq, PartialOrd, Ord)]
 #[repr(transparent)]
@@ -17,22 +24,14 @@ impl MenuData {
     }
 }
 
-unsafe extern "C" {
-    safe fn menu_set_data(data: MenuData);
-    safe fn menu_set_cursor(pos: i8);
-}
-
 impl Menu {
     pub fn set_data(tool: Tool, color: Color, fill: Fill) {
         let data = MenuData::new(tool, color, fill);
-        menu_set_data(data);
+        unsafe { core::ptr::write_volatile(&raw mut MMIO.menu.data, data) };
     }
 
     pub fn set_cursor(pos: Option<i8>) {
-        if let Some(pos) = pos {
-            menu_set_cursor(pos);
-        } else {
-            menu_set_cursor(-1);
-        }
+        let value = if let Some(pos) = pos { pos } else { -1 };
+        unsafe { core::ptr::write_volatile(&raw mut MMIO.menu.cursor, value) };
     }
 }
