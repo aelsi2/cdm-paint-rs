@@ -1,5 +1,4 @@
 use core::arch::cdm as arch;
-use core::arch::global_asm;
 use core::panic::PanicInfo;
 use critical_section::RawRestoreState;
 use embedded_alloc::LlffHeap as Heap;
@@ -42,8 +41,6 @@ unsafe impl critical_section::Impl for CDMCriticalSection {
         unsafe { arch::stps(token) }
     }
 }
-
-global_asm!(include_str!("./cdm.asm"));
 
 extern "cdm-isr" fn on_exception() {
     unsafe { arch::halt() }
