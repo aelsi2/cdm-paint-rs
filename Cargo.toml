@@ -14,6 +14,8 @@ debug = false
 lto = "fat"
 
 [dependencies]
+cdm = { git = "https://github.com/aelsi2/cdm-rs.git", features = ["panic-halt"] }
+cdm-rt = { git = "https://github.com/aelsi2/cdm-rs.git", features = ["interrupts"] }
 bitmask-enum = "2.2.5"
+critical-section = { version = "1.2.0" }
 embedded-alloc = "0.7.0"
-critical-section = { version = "1.2.0", features = ["restore-state-u16"] }

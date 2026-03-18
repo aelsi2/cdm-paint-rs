@@ -19,6 +19,7 @@ struct MmioRegs {
     input: Buttons,
 }
 
-#[used]
-#[unsafe(link_section = ".mmio")]
-static mut MMIO: MmioRegs = unsafe { core::mem::MaybeUninit::zeroed().assume_init() };
+unsafe extern "C" {
+    #[link_name = "__MMIO"]
+    static mut MMIO: MmioRegs;
+}

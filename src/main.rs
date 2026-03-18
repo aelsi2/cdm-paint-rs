@@ -4,35 +4,43 @@
 
 extern crate alloc;
 
-mod cdm;
 mod drawing;
-mod shapes;
 mod editor;
 mod graphics;
 mod io;
+mod shapes;
 
-use alloc::boxed::Box;
-use alloc::collections::VecDeque;
+use alloc::{boxed::Box, collections::VecDeque};
+use cdm_rt::{InterruptVector, Psr, interrupt_vectors};
 use core::cell::RefCell;
 use critical_section::Mutex;
 use drawing::DrawingCtx;
-use editor::Editor;
-use editor::EditorMode;
+use editor::{Editor, EditorMode};
+use embedded_alloc::LlffHeap as Heap;
+use io::{Buttons, display, input, menu};
 use shapes::Shape;
-use io::Buttons;
-use io::display;
-use io::input;
-use io::menu;
 
 static QUEUE: Mutex<RefCell<VecDeque<Box<dyn Shape>>>> = Mutex::new(RefCell::new(VecDeque::new()));
 static EDITOR: Mutex<RefCell<Editor>> = Mutex::new(RefCell::new(Editor::new()));
 
-pub extern "cdm-isr" fn main() {
-    critical_section::with(|cs| unsafe {
-        cdm::initialize();
-        input::set_handler(Some(on_input));
-        update_ui(&*EDITOR.borrow_ref_mut(cs));
-    });
+interrupt_vectors![
+    InterruptVector(io::on_input, Psr::None),
+    InterruptVector(io::on_timer, Psr::None),
+];
+
+unsafe fn platform_init() {
+    #[global_allocator]
+    static HEAP: Heap = Heap::empty();
+    embedded_alloc::init!(HEAP, 2048);
+    input::set_handler(Some(on_input));
+    unsafe { cdm::interrupt::enable() };
+}
+
+#[unsafe(no_mangle)]
+extern "C" fn main() {
+    unsafe { platform_init() };
+    critical_section::with(|cs| update_ui(&*EDITOR.borrow_ref_mut(cs)));
+
     let mut ctx = DrawingCtx::new();
     loop {
         if let Some(shape) = { critical_section::with(|cs| QUEUE.borrow_ref_mut(cs).pop_front()) } {
