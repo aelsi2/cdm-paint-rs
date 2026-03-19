@@ -2,6 +2,7 @@ use super::MMIO;
 use bitmask_enum::bitmask;
 use core::cell::RefCell;
 use critical_section::Mutex;
+use cdm_rt::interrupt;
 
 #[bitmask(u8)]
 pub enum Buttons {
@@ -72,7 +73,8 @@ static INPUT_STATE: Mutex<RefCell<InputState>> = Mutex::new(RefCell::new(InputSt
 
 const TRANSITION_MAX: usize = 3;
 
-pub extern "cdm-isr" fn on_input() {
+#[interrupt]
+pub fn on_input() {
     critical_section::with(|cs| {
         let mut state = INPUT_STATE.borrow_ref_mut(cs);
         let Some(on_input) = state.handler else {
@@ -99,7 +101,8 @@ pub extern "cdm-isr" fn on_input() {
     });
 }
 
-pub extern "cdm-isr" fn on_timer() {
+#[interrupt]
+pub fn on_timer() {
     critical_section::with(|cs| {
         let mut state = INPUT_STATE.borrow_ref_mut(cs);
         let Some(on_input) = state.handler else {

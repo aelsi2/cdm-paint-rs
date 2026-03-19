@@ -21,18 +21,29 @@ dependencies = [
 [[package]]
 name = "cdm"
 version = "0.1.0"
-source = "git+https://github.com/aelsi2/cdm-rs.git#4efbeff35213105c5618c0973b25ae5025ef5c3a"
+source = "git+https://github.com/aelsi2/cdm-rs.git#92a744eda660d96fa078167d22ba8a32bd53ec86"
 dependencies = [
  "bitmask-enum",
  "critical-section",
 ]
 
 [[package]]
+name = "cdm-macros"
+version = "0.1.0"
+source = "git+https://github.com/aelsi2/cdm-rs.git#92a744eda660d96fa078167d22ba8a32bd53ec86"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 2.0.117",
+]
+
+[[package]]
 name = "cdm-rt"
 version = "0.1.0"
-source = "git+https://github.com/aelsi2/cdm-rs.git#4efbeff35213105c5618c0973b25ae5025ef5c3a"
+source = "git+https://github.com/aelsi2/cdm-rs.git#92a744eda660d96fa078167d22ba8a32bd53ec86"
 dependencies = [
  "cdm",
+ "cdm-macros",
 ]
 
 [[package]]

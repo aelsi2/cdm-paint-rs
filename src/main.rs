@@ -11,7 +11,7 @@ mod io;
 mod shapes;
 
 use alloc::{boxed::Box, collections::VecDeque};
-use cdm_rt::{InterruptVector, Psr, interrupt_vectors};
+use cdm_rt::{InterruptVector, Psr, interrupt_vectors, entry};
 use core::cell::RefCell;
 use critical_section::Mutex;
 use drawing::DrawingCtx;
@@ -36,8 +36,8 @@ unsafe fn platform_init() {
     unsafe { cdm::interrupt::enable() };
 }
 
-#[unsafe(no_mangle)]
-extern "C" fn main() {
+#[entry]
+fn main() -> ! {
     unsafe { platform_init() };
     critical_section::with(|cs| update_ui(&*EDITOR.borrow_ref_mut(cs)));
 
