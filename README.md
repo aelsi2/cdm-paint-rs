@@ -28,7 +28,7 @@ Uses the [experimental CdM-16 Rust compiler](https://github.com/ylab-nsu/cdm16-r
 ## How to compile
 Download and install the [Rust compiler](https://github.com/ylab-nsu/cdm16-rust).
 
-Execute (replace `cdm` with the actual toolchain name, if it differs):
+Run cargo build (replace `cdm` with the actual toolchain name, if it differs):
 ```sh
 cargo +cdm build
 ```
