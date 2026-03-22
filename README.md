@@ -26,12 +26,9 @@ Uses the [experimental CdM-16 Rust compiler](https://github.com/ylab-nsu/cdm16-r
 - [x] 16 operation drawing queue
 
 ## How to compile
-Build or get the [Rust compiler](https://github.com/ylab-nsu/cdm16-rust) and add the custom toolchain to rustup like this:
-```sh
-rustup toolchain link cdm <rust_repo>/build/host/stage1
-```
+Download and install the [Rust compiler](https://github.com/ylab-nsu/cdm16-rust).
 
-Execute:
+Execute (replace `cdm` with the actual toolchain name, if it differs):
 ```sh
 cargo +cdm build
 ```
