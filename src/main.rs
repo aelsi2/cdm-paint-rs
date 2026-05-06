@@ -6,17 +6,19 @@ extern crate alloc;
 
 mod drawing;
 mod editor;
+mod errors;
 mod graphics;
 mod io;
 mod shapes;
 
 use alloc::{boxed::Box, collections::VecDeque};
-use cdm_rt::{InterruptVector, Psr, interrupt_vectors, entry};
+use cdm_rt::{InterruptVector, Psr, entry, interrupt_vectors};
 use core::cell::RefCell;
 use critical_section::Mutex;
 use drawing::DrawingCtx;
 use editor::{Editor, EditorMode};
 use embedded_alloc::LlffHeap as Heap;
+use embedded_io::Write;
 use io::{Buttons, display, input, menu};
 use shapes::Shape;
 
@@ -40,10 +42,12 @@ unsafe fn platform_init() {
 fn main() -> ! {
     unsafe { platform_init() };
     critical_section::with(|cs| update_ui(&*EDITOR.borrow_ref_mut(cs)));
+    _ = writeln!(io::uart(), "System initialized.");
 
     let mut ctx = DrawingCtx::new();
     loop {
         if let Some(shape) = { critical_section::with(|cs| QUEUE.borrow_ref_mut(cs).pop_front()) } {
+            _ = writeln!(io::uart(), "Drawing shape {:?}", shape);
             shape.draw(&mut ctx);
             display::update_range(&ctx.frame_buf, ctx.dirty_start, ctx.dirty_end);
             ctx.reset_dirty();

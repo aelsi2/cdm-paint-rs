@@ -39,5 +39,6 @@ You will get a binary located at `./target/cdm-none/debug/cdm_paint`. Convert it
 ```
 
 ## How to run
-Get the logisim project from the [C version](https://github.com/aelsi2/cdm_paint/). Edit the image path in the RAM component and change it to the Logisim image you got.
+Open up the [Logisim project](./logisim/cdm-paint.circ). Edit the image path in the RAM component and change it to the image you got.
+
 Run the simulation.

@@ -21,7 +21,7 @@ dependencies = [
 [[package]]
 name = "cdm"
 version = "0.1.0"
-source = "git+https://github.com/aelsi2/cdm-rs.git#6af0eade7b7bb50bb5f1ba8b2411396399257068"
+source = "git+https://github.com/aelsi2/cdm-rs.git#0e7f42352df1689ab3f55744fe906db01d4d37c6"
 dependencies = [
  "bitmask-enum",
  "critical-section",
@@ -30,7 +30,7 @@ dependencies = [
 [[package]]
 name = "cdm-macros"
 version = "0.1.0"
-source = "git+https://github.com/aelsi2/cdm-rs.git#6af0eade7b7bb50bb5f1ba8b2411396399257068"
+source = "git+https://github.com/aelsi2/cdm-rs.git#0e7f42352df1689ab3f55744fe906db01d4d37c6"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -40,10 +40,19 @@ dependencies = [
 [[package]]
 name = "cdm-rt"
 version = "0.1.0"
-source = "git+https://github.com/aelsi2/cdm-rs.git#6af0eade7b7bb50bb5f1ba8b2411396399257068"
+source = "git+https://github.com/aelsi2/cdm-rs.git#0e7f42352df1689ab3f55744fe906db01d4d37c6"
 dependencies = [
  "cdm",
  "cdm-macros",
+]
+
+[[package]]
+name = "cdm-uart"
+version = "0.1.0"
+source = "git+https://github.com/aelsi2/cdm-rs.git#0e7f42352df1689ab3f55744fe906db01d4d37c6"
+dependencies = [
+ "embed-doc-image",
+ "embedded-io",
 ]
 
 [[package]]
@@ -53,8 +62,10 @@ dependencies = [
  "bitmask-enum",
  "cdm",
  "cdm-rt",
+ "cdm-uart",
  "critical-section",
  "embedded-alloc",
+ "embedded-io",
 ]
 
 [[package]]
@@ -76,6 +87,18 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "790eea4361631c5e7d22598ecd5723ff611904e3344ce8720784c93e3d83d40b"
 
 [[package]]
+name = "embed-doc-image"
+version = "0.1.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "af36f591236d9d822425cb6896595658fa558fcebf5ee8accac1d4b92c47166e"
+dependencies = [
+ "base64",
+ "proc-macro2",
+ "quote",
+ "syn 1.0.109",
+]
+
+[[package]]
 name = "embedded-alloc"
 version = "0.7.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -88,16 +111,22 @@ dependencies = [
 ]
 
 [[package]]
-name = "libc"
-version = "0.2.183"
+name = "embedded-io"
+version = "0.7.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b5b646652bf6661599e1da8901b3b9522896f01e736bad5f723fe7a3a27f899d"
+checksum = "9eb1aa714776b75c7e67e1da744b81a129b3ff919c8712b5e1b32252c1f07cc7"
+
+[[package]]
+name = "libc"
+version = "0.2.186"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "68ab91017fe16c622486840e4c83c9a37afeff978bd239b5293d61ece587de66"
 
 [[package]]
 name = "linked_list_allocator"
-version = "0.10.5"
+version = "0.10.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9afa463f5405ee81cdb9cc2baf37e08ec7e4c8209442b5d72c04cfb2cd6e6286"
+checksum = "2b23ac50abb8261cb38c6e2a7192d3302e0836dac1628f6a93b82b4fad185897"
 
 [[package]]
 name = "proc-macro2"

@@ -2,11 +2,13 @@ use crate::drawing::DrawingCtx;
 use crate::graphics::Color;
 use crate::graphics::Fill;
 use crate::graphics::Point;
+use core::fmt::Debug;
 
-pub trait Shape: Send {
+pub trait Shape: Send + Debug {
     fn draw(&self, ctx: &mut DrawingCtx);
 }
 
+#[derive(Debug)]
 pub struct Rect {
     pt1: Point,
     pt2: Point,
@@ -34,6 +36,7 @@ impl Shape for Rect {
     }
 }
 
+#[derive(Debug)]
 pub struct Ellipse {
     pt1: Point,
     pt2: Point,
@@ -61,6 +64,7 @@ impl Shape for Ellipse {
     }
 }
 
+#[derive(Debug)]
 pub struct Line {
     pt1: Point,
     pt2: Point,
@@ -79,6 +83,7 @@ impl Shape for Line {
     }
 }
 
+#[derive(Debug)]
 pub struct Pixel {
     point: Point,
     color: Color,
@@ -96,6 +101,7 @@ impl Shape for Pixel {
     }
 }
 
+#[derive(Debug)]
 pub struct FloodFill {
     point: Point,
     color: Color,
@@ -113,6 +119,7 @@ impl Shape for FloodFill {
     }
 }
 
+#[derive(Debug)]
 pub struct Clear {
     color: Color,
 }

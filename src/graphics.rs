@@ -13,7 +13,7 @@ pub type FrameBuf = [Block; FRAMEBUF_SIZE];
 #[repr(transparent)]
 pub struct Point(i16);
 
-#[derive(Clone, Copy, Default, Hash, Eq, PartialEq)]
+#[derive(Clone, Copy, Default, Hash, Eq, PartialEq, Debug)]
 #[repr(u8)]
 pub enum Color {
     #[default]
@@ -21,7 +21,7 @@ pub enum Color {
     White = 1,
 }
 
-#[derive(Clone, Copy, Default, Hash, Eq, PartialEq)]
+#[derive(Clone, Copy, Default, Hash, Eq, PartialEq, Debug)]
 #[repr(u8)]
 pub enum Tool {
     #[default]
@@ -33,7 +33,7 @@ pub enum Tool {
     Clear = 5,
 }
 
-#[derive(Clone, Copy, Default, Hash, Eq, PartialEq)]
+#[derive(Clone, Copy, Default, Hash, Eq, PartialEq, Debug)]
 #[repr(u8)]
 pub enum Fill {
     #[default]
@@ -122,5 +122,11 @@ impl Sub<Point> for Point {
         let Point(lhs_val) = self;
         let Point(rhs_val) = rhs;
         Point(lhs_val - rhs_val)
+    }
+}
+
+impl core::fmt::Debug for Point {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        f.debug_tuple("Point").field(&self.x()).field(&self.y()).finish()
     }
 }

@@ -17,11 +17,15 @@ lto = "fat"
 bitmask-enum = "2.2.5"
 critical-section = "1.2.0"
 embedded-alloc = "0.7.0"
+embedded-io = "0.7.1"
 
 [dependencies.cdm]
 git = "https://github.com/aelsi2/cdm-rs.git"
-features = ["panic-halt", "critical-section"] 
+features = ["critical-section"] 
 
 [dependencies.cdm-rt]
 git = "https://github.com/aelsi2/cdm-rs.git"
 features = ["interrupts"] 
+
+[dependencies.cdm-uart]
+git = "https://github.com/aelsi2/cdm-rs.git"
