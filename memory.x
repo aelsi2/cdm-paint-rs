@@ -1,5 +1,2 @@
-MEMORY {
-    RAM : ORIGIN = 0x120, LENGTH = 64K-0x120
-}
-
-__MMIO = 0x100
+RAM_ORIGIN = 0x120;
+__MMIO = 0x100;

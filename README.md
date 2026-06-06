@@ -26,19 +26,16 @@ Uses the [experimental CdM-16 Rust compiler](https://github.com/ylab-nsu/cdm16-r
 - [x] 16 operation drawing queue
 
 ## How to compile
-Download and install the [Rust compiler](https://github.com/ylab-nsu/cdm16-rust).
+Install the [Rust compiler](https://github.com/ylab-nsu/cdm16-rust/releases).
 
-Run cargo build (replace `cdm` with the actual toolchain name, if it differs):
+Run `cargo objcopy` (assuming `cdm` is the name of the CDM-16 toolchain in rustup):
 ```sh
-cargo +cdm build
+cargo +cdm objcopy --release -- -O logisim logisim/cdm-paint.img
 ```
 
-You will get a binary located at `./target/cdm-none/debug/cdm_paint`. Convert it to a Logisim image with this command:
-```sh
-{ echo 'v2.0 raw'; od -tx1 -An -v | tr -s '[:blank:]' '\n'; } < ./target/cdm-none/debug/cdm_paint > ./target/cdm-none/debug/cdm_paint.img
-```
+You will get a Logisim image located at `./logisim/cdm-paint.img`.
 
 ## How to run
-Open up the [Logisim project](./logisim/cdm-paint.circ). Edit the image path in the RAM component and change it to the image you got.
+Open the [Logisim project](./logisim/cdm-paint.circ). Edit the image path in the RAM component to match your image path.
 
 Run the simulation.
