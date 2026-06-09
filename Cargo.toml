@@ -25,7 +25,7 @@ features = ["critical-section"]
 
 [dependencies.cdm-rt]
 git = "https://github.com/aelsi2/cdm-rs.git"
-features = ["interrupts"] 
+features = ["interrupts", "harvard"] 
 
 [dependencies.cdm-uart]
 git = "https://github.com/aelsi2/cdm-rs.git"

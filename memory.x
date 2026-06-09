@@ -1,2 +1,2 @@
-RAM_ORIGIN = 0x120;
-__MMIO = 0x100;
+RAM_ORIGIN = 0x10;
+__MMIO = 0;
