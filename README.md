@@ -34,8 +34,3 @@ cargo +cdm objcopy --release -- -O logisim logisim/cdm-paint.img
 ```
 
 You will get a Logisim image located at `./logisim/cdm-paint.img`.
-
-## How to run
-Open the [Logisim project](./logisim/cdm-paint.circ). Edit the image path in the ROM component to match your image path.
-
-Run the simulation.
