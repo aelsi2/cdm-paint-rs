@@ -1,3 +1,8 @@
+> [!WARNING]
+> This branch uses the old `cocas`-based Rust toolchain that has been removed from the main branch of the CDM-16 Rust compiler.
+> To compile this branch you'll have to use the compiler from the [`cdm-bitcode-linker`](https://github.com/ylab-nsu/cdm16-rust/tree/cdm-bitcode-linker) branch. 
+> There are no prebuilt binaries for it, so you'll have to build it yourself.
+
 # cdm-paint-rs
 
 A feature-complete rewrite of [cdm_paint](https://github.com/aelsi2/cdm_paint/), a raster graphics editor based on CdM-16, using the Rust programming language.
