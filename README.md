@@ -34,3 +34,6 @@ cargo +cdm objcopy --release -- -O logisim logisim/cdm-paint.img
 ```
 
 You will get a Logisim image located at `./logisim/cdm-paint.img`.
+
+## How to run
+Open the project at `./logisim/cdm-paint.circ` with [Logisim](https://sourceforge.net/projects/circuit/), set the tick frequency to the maximum possible value and run the simulation.
