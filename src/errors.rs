@@ -4,27 +4,33 @@ use cdm_rt::exception;
 use core::panic::PanicInfo;
 use embedded_io::Write;
 
+#[exception(Default)]
+fn on_exception() -> ! {
+    let _ = write!(uart(), "\nEXCEPTION: other\n");
+    halt();
+}
+
 #[exception(UnalignedSP)]
 fn unaligned_sp() -> ! {
-    let _ = write!(uart(), "HARDWARE EXCEPTION: unaligned stack pointer\n");
-    cdm::execution::halt();
+    let _ = write!(uart(), "\nEXCEPTION: unaligned stack pointer\n");
+    halt();
 }
 
 #[exception(UnalignedPC)]
 fn unaligned_pc() -> ! {
-    let _ = write!(uart(), "HARDWARE EXCEPTION: unaligned program counter\n");
-    halt();
-}
-
-#[exception(DoubleFault)]
-fn double_fault() -> ! {
-    let _ = write!(uart(), "HARDWARE EXCEPTION: double fault\n");
+    let _ = write!(uart(), "\nEXCEPTION: unaligned program counter\n");
     halt();
 }
 
 #[exception(InvalidInst)]
 fn invalid_inst() -> ! {
-    let _ = write!(uart(), "HARDWARE EXCEPTION: invalid instruction\n");
+    let _ = write!(uart(), "\nEXCEPTION: invalid instruction\n");
+    halt();
+}
+
+#[exception(DoubleFault)]
+fn double_fault() -> ! {
+    let _ = write!(uart(), "\nEXCEPTION: double fault\n");
     halt();
 }
 
@@ -32,7 +38,7 @@ fn invalid_inst() -> ! {
 #[panic_handler]
 fn panic_handler(info: &PanicInfo) -> ! {
     let mut uart = uart();
-    let _ = write!(uart, "PANIC: {}", info.message());
+    let _ = write!(uart, "\nPANIC: {}", info.message());
     if let Some(location) = info.location() {
         let _ = write!(uart, " at {}:{}", location.file(), location.line());
     }
