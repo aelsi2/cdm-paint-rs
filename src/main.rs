@@ -26,8 +26,8 @@ static QUEUE: Mutex<RefCell<VecDeque<Box<dyn Shape>>>> = Mutex::new(RefCell::new
 static EDITOR: Mutex<RefCell<Editor>> = Mutex::new(RefCell::new(Editor::new()));
 
 interrupt_vectors![
-    InterruptVector(io::on_input, Psr::None),
-    InterruptVector(io::on_timer, Psr::None),
+    InterruptVector(io::on_input, Psr::NONE),
+    InterruptVector(io::on_timer, Psr::NONE),
 ];
 
 unsafe fn platform_init() {
