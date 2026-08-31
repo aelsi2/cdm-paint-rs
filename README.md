@@ -26,11 +26,15 @@ Uses the [experimental CdM-16 Rust compiler](https://github.com/ylab-nsu/cdm16-r
 - [x] 16 operation drawing queue
 
 ## How to compile
-Install the [Rust compiler](https://github.com/ylab-nsu/cdm16-rust/releases).
-
-Run `cargo objcopy` (assuming `cdm` is the name of the CDM-16 toolchain in rustup):
+Install the [Rust toolchain](https://github.com/ylab-nsu/cdm16-rust/releases) and set an override for the project. 
+You can do the latter by running the following command once in the project directory (assuming `cdm` is the toolchain name you chose during installation):
 ```sh
-cargo +cdm objcopy --release -- -O logisim logisim/cdm-paint.img
+rustup override set cdm
+```
+
+Run `cargo objcopy`:
+```sh
+cargo objcopy --release -- -O logisim logisim/cdm-paint.img
 ```
 
 You will get a Logisim image located at `./logisim/cdm-paint.img`.
