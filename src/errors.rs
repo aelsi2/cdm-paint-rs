@@ -23,8 +23,8 @@ fn unaligned_pc() -> ! {
 }
 
 #[exception(InvalidInst)]
-fn invalid_inst() -> ! {
-    let _ = write!(uart(), "\nEXCEPTION: invalid instruction\n");
+fn invalid_inst(ctx: _) -> ! {
+    let _ = write!(uart(), "\nEXCEPTION: invalid instruction\n{:x?}\n", ctx);
     halt();
 }
 

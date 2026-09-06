@@ -21,7 +21,7 @@ dependencies = [
 [[package]]
 name = "cdm"
 version = "0.1.0"
-source = "git+https://github.com/aelsi2/cdm-rs.git#011ca763a8329588f8e630e0f1fc8968519a2b0a"
+source = "git+https://github.com/aelsi2/cdm-rs.git#4dcf45bf02dc39f43cfdce98a9f22feb2752d8cb"
 dependencies = [
  "critical-section",
 ]
@@ -29,7 +29,7 @@ dependencies = [
 [[package]]
 name = "cdm-macros"
 version = "0.1.0"
-source = "git+https://github.com/aelsi2/cdm-rs.git#011ca763a8329588f8e630e0f1fc8968519a2b0a"
+source = "git+https://github.com/aelsi2/cdm-rs.git#4dcf45bf02dc39f43cfdce98a9f22feb2752d8cb"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -39,7 +39,7 @@ dependencies = [
 [[package]]
 name = "cdm-rt"
 version = "0.1.0"
-source = "git+https://github.com/aelsi2/cdm-rs.git#011ca763a8329588f8e630e0f1fc8968519a2b0a"
+source = "git+https://github.com/aelsi2/cdm-rs.git#4dcf45bf02dc39f43cfdce98a9f22feb2752d8cb"
 dependencies = [
  "cdm",
  "cdm-macros",
@@ -48,7 +48,7 @@ dependencies = [
 [[package]]
 name = "cdm-uart"
 version = "0.1.0"
-source = "git+https://github.com/aelsi2/cdm-rs.git#011ca763a8329588f8e630e0f1fc8968519a2b0a"
+source = "git+https://github.com/aelsi2/cdm-rs.git#4dcf45bf02dc39f43cfdce98a9f22feb2752d8cb"
 dependencies = [
  "embed-doc-image",
  "embedded-io",
