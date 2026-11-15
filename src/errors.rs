@@ -23,8 +23,8 @@ fn unaligned_pc() -> ! {
 }
 
 #[exception(InvalidInst)]
-fn invalid_inst(ctx: _) -> ! {
-    let _ = write!(uart(), "\nEXCEPTION: invalid instruction\n{:x?}\n", ctx);
+fn invalid_inst(ctx: cdm_rt::InterruptContext<'_>) -> ! {
+    let _ = write!(uart(), "\nEXCEPTION: invalid instruction\n{:04x?}\n", ctx);
     halt();
 }
 

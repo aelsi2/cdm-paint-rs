@@ -21,7 +21,7 @@ dependencies = [
 [[package]]
 name = "cdm"
 version = "0.1.0"
-source = "git+https://github.com/aelsi2/cdm-rs.git#4dcf45bf02dc39f43cfdce98a9f22feb2752d8cb"
+source = "git+https://github.com/aelsi2/cdm-rs.git#4ae4f3d0985a7a0518f88014d9d6fce03a4e660e"
 dependencies = [
  "critical-section",
 ]
@@ -29,7 +29,7 @@ dependencies = [
 [[package]]
 name = "cdm-macros"
 version = "0.1.0"
-source = "git+https://github.com/aelsi2/cdm-rs.git#4dcf45bf02dc39f43cfdce98a9f22feb2752d8cb"
+source = "git+https://github.com/aelsi2/cdm-rs.git#4ae4f3d0985a7a0518f88014d9d6fce03a4e660e"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -39,7 +39,7 @@ dependencies = [
 [[package]]
 name = "cdm-rt"
 version = "0.1.0"
-source = "git+https://github.com/aelsi2/cdm-rs.git#4dcf45bf02dc39f43cfdce98a9f22feb2752d8cb"
+source = "git+https://github.com/aelsi2/cdm-rs.git#4ae4f3d0985a7a0518f88014d9d6fce03a4e660e"
 dependencies = [
  "cdm",
  "cdm-macros",
@@ -48,7 +48,7 @@ dependencies = [
 [[package]]
 name = "cdm-uart"
 version = "0.1.0"
-source = "git+https://github.com/aelsi2/cdm-rs.git#4dcf45bf02dc39f43cfdce98a9f22feb2752d8cb"
+source = "git+https://github.com/aelsi2/cdm-rs.git#4ae4f3d0985a7a0518f88014d9d6fce03a4e660e"
 dependencies = [
  "embed-doc-image",
  "embedded-io",
@@ -69,9 +69,9 @@ dependencies = [
 
 [[package]]
 name = "cfg-if"
-version = "1.0.4"
+version = "1.0.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9330f8b2ff13f34540b44e946ef35111825727b38d33286ef986142615121801"
+checksum = "4e7648175b45a9a48536d676f68d918270699102aa8dab5496df06904c914600"
 
 [[package]]
 name = "const-default"
@@ -117,9 +117,9 @@ checksum = "9eb1aa714776b75c7e67e1da744b81a129b3ff919c8712b5e1b32252c1f07cc7"
 
 [[package]]
 name = "libc"
-version = "0.2.189"
+version = "0.2.191"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3eaf3ede3fee6db1a4c2ee091bf8a8b4dccdc6d17f656fb07896ee72867612f2"
+checksum = "65cd87c9a6d60536580b316ad985726104730a5151c99845f2490428ef91240a"
 
 [[package]]
 name = "linked_list_allocator"
@@ -187,6 +187,6 @@ dependencies = [
 
 [[package]]
 name = "unicode-ident"
-version = "1.0.24"
+version = "1.0.27"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e6e4313cd5fcd3dad5cafa179702e2b244f760991f45397d14d4ebf38247da75"
+checksum = "a2c754d6c33795a1c324727428e5a7dedb5b06195f9890bdbcba760d3e246563"
